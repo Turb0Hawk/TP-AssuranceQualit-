@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;LFR_DiceRoller/src/Main.java&apos; to &apos;MainLFR_DiceRoller.java&apos;" description="Rename resource &apos;Main.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/Main.java" name="MainLFR_DiceRoller.java" stamp="1542380736149" updateReferences="true"/>
+</session>

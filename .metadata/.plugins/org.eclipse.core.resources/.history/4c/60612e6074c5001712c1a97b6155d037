@@ -1,0 +1,313 @@
+/*
+ * Auteurs : Christian Mongeon et TODO
+ * 
+ * Fichier : MainTp4.java
+ * 
+ * Date de remise : 23 novembre 2017
+ */
+
+import java.io.*;
+import java.text.*;
+
+public class MainTp4 {
+
+	public static void main( String[] args ) throws IOException {
+		
+		final String MENU = "\nJEUX DISPONIBLES\n\n" +		
+							"1. Calcul mental\n" +
+							"2. Jouer aux dés\n" +
+							"3. Deviner un nombre\n" +
+							"4. Quitter le programme\n";
+
+		final char CALCUL = '1', DES = '2', DEVINER = '3', QUITTER = '4';
+
+		char choix;
+
+		System.out.println( "Bienvenue au programme de jeux du TP4." );
+
+		// TODO Voir page 4 de l'énoncé.
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static void calculMental() throws IOException {	
+		
+		final int NB_MIN = 1;
+		final int NB_MAX = 12;
+		
+		final char OUI = 'O';
+		
+		// TODO Déclaration des variables locales nécessaires.
+		
+		System.out.println( "\nBienvenue au jeu \"Calcul mental\".");
+		
+		// TODO Voir page 5 de l'énoncé.
+				
+		System.out.println( "\nMerci d'avoir joué au jeu" +
+							" \"Calcul mental\"." );
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static char lireOperateur( String question ) throws IOException {
+		
+		// TODO Voir page 5 de l'énoncé.
+		
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static int calculerResultat( int nb1, int nb2, char operateur ) {		
+
+		// TODO Voir page 5 de l'énoncé.
+		
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static void jouerAuxDes() throws IOException {	
+		
+		final int NB_MIN_LANCERS = 1;
+		final int NB_MAX_LANCERS = 20;
+		
+		final int NB_MIN_DES = 1;
+		final int NB_MAX_DES = 8;
+		int nbLancerGlobal, nbLancerItteratif, global, itteration,
+		 deItteration, totalDes;
+		double moyenneDes;
+		System.out.println( "\nBienvenue au jeu \"Jouer aux dés\".\n");
+		
+		nbLancerGlobal = lireEntierValide("Combien de fois voulez-vous " + 
+				"lancer les dés (entre " + NB_MIN_LANCERS  + " et " + 
+				NB_MAX_LANCERS + ") : ", NB_MIN_LANCERS, NB_MAX_LANCERS);
+		nbLancerItteratif = lireEntierValide("Combien de dés voulez-vous lancer à chaque fois (entre " + NB_MIN_DES +
+				" et " + NB_MAX_DES , 1, 8)
+		POUR ( global; global <= nbLancerGlobal; global <- global + 1 ) FAIRE
+			AFFICHER  "\nLancer #" global 
+			POUR ( itteration; itteration <= nbLancerItteratif; itteration <- itteration + 1 ) FAIRE
+				deItteration <- Exécuter genererNbHasard(1,6)
+				AFFICHER "\t Valeur du dé #" itteration " : " Exécuter 
+				totalDes <- totalDes + deItteration
+		
+			FIN POUR
+		
+		FIN POUR
+		
+		moyenneDes <- totalDes / ( nbLancerGlobal * nbLancerItteratif )
+		
+		AFFICHER "\nGrand total des valeurs de tous les dés : " totalDes
+		AFFICHER "\nMoyenne des valeurs par lancer : " Exécuter formaterNb (moyenneDes, 2)
+				
+		System.out.println( "\nMerci d'avoir joué au jeu " +
+							"\"Jouer aux dés\"." );
+	}
+
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static void devinerUnNombre() throws IOException {
+		
+		final int NB_MIN = 1;
+		final int NB_MAX = 50;
+		
+		final char OUI = 'O';
+		final char NON = 'N';
+		
+		// TODO Déclaration des variables locales nécessaires.
+				
+		System.out.println( "\nBienvenue au jeu \"Deviner un nombre\".");
+		System.out.println( "\nIl s'agit de deviner un nombre entre " +
+				            NB_MIN + " et " + NB_MAX + "." );
+		
+		// TODO Voir page 6 de l'énoncé.
+				
+		System.out.println( "\nMerci d'avoir joué au jeu" +
+							" \"Deviner un nombre\"." );
+	}
+	
+	/*
+	 * La méthode lireCaractere() permet de lire un et un seul caractère
+	 * sans aucune validation.
+	 *
+ 	 * Paramètre : la question à afficher à l'utilisateur.
+	 *
+	 * Retourne : le caractère lu.
+	 */
+	
+	private static char lireCaractere( String question ) throws IOException {		
+		String chaine;
+		boolean valide;
+		int lgChaine;
+
+		do {
+			valide = true;
+			chaine = lireChaine( question );
+			lgChaine = chaine.length();
+
+			// Erreur si le nombre de caractères de la chaîne lue
+			// n'est pas exactement 1.
+			
+			if ( lgChaine != 1 ) {
+				System.out.println( "\nErreur, entrez un seul caractère." );
+				valide = false;
+			}
+		} while ( !valide );
+
+		// Retourne le premier caractère de la chaîne lue.
+		
+		return chaine.charAt( 0 );
+	}
+
+	/*
+	 * La méthode lireChaine() permet de lire une chaîne en s'assurant
+	 * qu'elle n'est pas vide.
+	 *
+	 * Paramètre : la question à afficher à l'utilisateur.
+	 *
+	 * Retourne : la chaîne de caractères lue.
+	 */
+	
+	private static String lireChaine( String question ) throws IOException {		
+		BufferedReader clavier =
+			new BufferedReader( new InputStreamReader( System.in ) );
+		
+		String chaine;
+		boolean valide;
+		int lgChaine;
+		
+		do {
+			valide = true;
+			System.out.print( question );
+	
+			chaine = clavier.readLine();
+			lgChaine = chaine.length();
+
+			// Erreur si la chaîne lue est vide.
+
+			if ( lgChaine == 0 ) {
+				System.out.println( "\nErreur, l'entrée ne doit pas" +
+									" être vide." );
+				valide = false;
+			}
+		} while ( !valide );
+				
+		return chaine;
+	}
+
+	/*
+	 * La méthode genererNbHasard() permet de générer un nombre entier
+	 * aléatoire entre une borne inférieure et une borne supérieure.
+	 * Ne fonctionne qu'avec des entiers plus grand ou égal à 0.
+	 * 
+	 * Paramètres : la borne inférieure et la borne supérieure. Aucune
+	 *              validation, la borne inférieure doit être plus
+	 *              petite ou égale à la borne supérieure.
+	 * 
+	 * Retourne : un entier au hasard entre les deux bornes.
+	 */
+
+	private static int genererNbHasard( int min, int max ) {
+	    return (int) ( ( Math.random() * ( max - min + 1 ) ) + min );
+	}
+
+	/*
+	 * La méthode lireOuiNon() permet d'afficher une question et de
+	 * lire la réponse O ou N de l'utilisateur.
+	 * 
+	 * Paramètre: la question à afficher.
+	 * 
+	 * Retourne : le caractère O ou N en majuscule.
+	 */
+
+	private static char lireOuiNon( String question ) throws IOException {
+		char rep;
+		boolean valide;
+
+		do {
+			valide = true;
+
+			// Convertir le caractère lu en majuscule.
+			
+			rep = Character.toUpperCase( lireCaractere( question ) );
+
+			// Erreur si le caractère lu n'est pas O ou N.
+			
+			if ( rep != 'O' && rep != 'N' ) {
+				System.out.println( "\nErreur, répondez par O ou N " +
+						            "seulement." );
+				valide = false;
+			}
+		} while ( !valide );
+
+		return rep;
+	}
+	
+	/*
+	 * La méthode lireEntierValide() permet d'afficher une question et de lire
+	 * un nombre entier qui fait partie d'un intervalle.
+	 * 
+	 * Paramètres : la question à afficher à l'utilisateur, le nombre minimum
+	 *              et le nombre maximum.
+	 * 
+	 * Retourne : le nombre entier lu.
+	 */
+	
+	private static int lireEntierValide( String question, int min, int max )
+			throws IOException {
+
+		boolean valide;
+		int nombreLu;
+
+		do {
+			valide = true;
+
+			nombreLu = lireEntier( question );
+
+			// Erreur si le nombre lu n'est pas entre min et max.
+		
+			if ( nombreLu < min || nombreLu > max ) {
+				System.out.println( "\nErreur, entrez un nombre entier " +
+									"entre " + min + " et " + max );
+				valide = false;
+			}
+		} while ( !valide );
+
+		return nombreLu;
+	}
+	
+	/*
+	 * La méthode lireEntier() permet de lire un entier sans aucune validation.
+	 * 
+	 * Paramètre : la question à afficher à l'utilisateur.
+	 * 
+	 * Retourne : le nombre entier lu.
+	 */
+	
+	private static int lireEntier( String question ) throws IOException {
+		BufferedReader clavier =
+	        new BufferedReader( new InputStreamReader( System.in ) );
+		
+		System.out.print( question );
+		
+		return Integer.parseInt( clavier.readLine() );
+	}
+	
+	/*
+	 * La méthode formaterNb() permet de formater un nombre dans
+	 * le format 9 999,99.
+	 * 
+	 * Paramètres : Le nombre à formater et le nombre de décimales
+	 *              à mettre après la virgule.
+	 * 
+	 * Retourne : la chaîne de caractères contenant le nombre formaté.
+	 */
+
+	private static String formaterNb( double nb, int dec ) {
+	    NumberFormat formatNb = NumberFormat.getNumberInstance();
+
+	    formatNb.setMinimumIntegerDigits( 1 );
+	    formatNb.setMinimumFractionDigits( dec );
+	    formatNb.setMaximumFractionDigits( dec );
+
+	    return formatNb.format( nb );
+	}
+}

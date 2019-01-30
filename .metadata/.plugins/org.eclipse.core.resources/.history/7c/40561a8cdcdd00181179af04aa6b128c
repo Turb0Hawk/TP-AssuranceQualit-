@@ -1,0 +1,302 @@
+/**
+ * Auteurs : David et Soti
+ * Fichier : ExpressionArithmetique.java
+ * Cours   : 420-3A6-MO (TP5, Expressions arithmétiques et Sudoku)
+ * Date    : 1 novembre 2018
+ */
+
+// Packages.
+import java.util.*;
+
+/**
+ * La classe ExpressionArithmetique contient tout ce qu'il faut pour créer un
+ * objet pour une expression arithmétique et de l'évaluer.
+ */
+
+public class ExpressionArithmetique {
+	// Constante de la classe ExpressionArithmetique.
+
+	public static final int MAX_CAR_EXPRESSION = 80;
+
+	// Variable de classe de type HasMap pour associer priorités aux opérateurs.
+	// La clé est l'opérateur et la valeur est la priorité.
+
+	private static HashMap<Character, Integer> priorite = new HashMap<>();
+
+	// Champs d'instance de la classe ExpressionArithmetique.
+
+	// Le tableau de caractères pour l'expression infixe.
+	private char[] tabInfixe = new char[MAX_CAR_EXPRESSION];
+
+	// Le tableau de caractères pour l'expression postfixe.
+	private char[] tabPostfixe = new char[MAX_CAR_EXPRESSION];
+
+	// Le résultat final de l'expression.
+	private int resultatFinal;
+
+	/**
+	 * Le constructeur ExpressionArithmetique() permet de construire un objet
+	 * expression arithmétique. Il transforme l'expression infixe en postfixe et
+	 * ensuite il évalue l'expression transformée.
+	 * 
+	 * @param expression
+	 *            L'expression arithmétique.
+	 */
+
+	public ExpressionArithmetique(String expression) {
+
+		/**
+		 * 
+		 * Avant de commencer à compléter cette classe, consulter la page 3 de
+		 * l'énoncé du TP5.
+		 * 
+		 * Vous devez transformer l'expression reçue en paramètre en tableau de
+		 * caractères (méthode toCharArray() de l'expression) et déposer le
+		 * résultat dans le champ privé this.tabInfixe.
+		 * 
+		 * Vous devez exécuter la méthode privée qui permet de transformer
+		 * l'expression de Infixe en Postifixe.
+		 * 
+		 * Vous devez exécuter la méthode privée qui permet d'évaluer
+		 * l'expression.
+		 */
+		this.tabInfixe = expression.toCharArray();
+		transformerInfixeEnPostfixe();
+		evaluerExpression();
+	}
+
+	/**
+	 * La méthode statique de classe initialiserPrioriteOperateurs() permet
+	 * d'ajouter dans la variable privée statique de classe de type HashMap les
+	 * opérateurs avec leur priorité.
+	 */
+
+	public static void initialiserPrioriteOperateurs() {
+
+		/**
+		 * 
+		 * La variable de classe privée priorite est déjà déclaréé et créée.
+		 * Elle est de type HasMap car on veut faire des associations entre les
+		 * opérateurs et leur priorité.
+		 * 
+		 * Ici, la clé est l'opérateur et la valeur est la priorité.
+		 * 
+		 * Vous devez ajouter les associations suivantes dans le tableau
+		 * priorite (méthode put() de l'objet) : La valeur de la clé '=' est 0,
+		 * la valeur de la clé '(' est 1, la valeur de la clé '+' est 2, la
+		 * valeur de la clé '-' est 2, la valeur de la clé '*' est 3, la valeur
+		 * de la clé '/' est 3.
+		 */
+		priorite.put('=', 0);
+		priorite.put('(', 1);
+		priorite.put('+', 2);
+		priorite.put('-', 2);
+		priorite.put('*', 3);
+		priorite.put('/', 3);
+	}
+
+	/**
+	 * L'accesseur getTabInfixe() permet d'obtenir la valeur du champ privé
+	 * tabInfixe.
+	 * 
+	 * @return Le tableau infixe sous forme de String.
+	 */
+
+	public String getTabInfixe() {
+		return new String(this.tabInfixe);
+	}
+
+	/**
+	 * L'accesseur getTabPostfixe() permet d'obtenir la valeur du champ privé
+	 * tabPostfixe.
+	 * 
+	 * @return Le tableau postfixe sous forme de String. Les caractères nuls
+	 *         sont remplacés par des espaces pour améliorer l'affichage.
+	 */
+
+	public String getTabPostfixe() {
+		return new String(this.tabPostfixe).replace('\0', ' ');
+	}
+
+	/**
+	 * L'accesseur getResultatFinal() permet d'obtenir la valeur du champ privé
+	 * resultatFinal.
+	 * 
+	 * @return Le resultat final de l'expression arithmétique.
+	 */
+
+	public int getResultatFinal() {
+		return this.resultatFinal;
+	}
+
+	/**
+	 * La méthode privée transformerInfixeEnPostfixe() permet de transformer
+	 * l'expression infixe en postfixe.
+	 */
+
+	private void transformerInfixeEnPostfixe() {
+
+		/**
+		 * 
+		 * Vous devez programmer l'algorithme des pages 18 et 19 du document 5
+		 * qui permet de transformer une expression arithmétique de infixe
+		 * (this.tabInfixe) en postfixe (this.tabPostfixe). Lisez ce qui suit
+		 * avant de commencer.
+		 * 
+		 * Vous devez utiliser la classe Pile pour la pileTransformation.
+		 * 
+		 * Dans la classe Character, la méthode statique isDigit() permet de
+		 * vérifier si un caractère est un chiffre.
+		 * 
+		 * Vous devez utiliser la méthode get() du tableau priorite lorsqu'il
+		 * sera nécessaire d'obtenir la priorité d'un opérateur.
+		 */
+		// TODO much sketch
+		int indPostfixe = 0;
+		Pile<Character> pileTransformation = new Pile<>();
+		pileTransformation.empiler('=');
+		for (char carInfixe : tabInfixe) {
+			// Character carInfixe = this.tabInfixe[i];
+			if (Character.isDigit(carInfixe)) {
+				tabPostfixe[indPostfixe] = carInfixe;
+				indPostfixe++;
+			} else if (carInfixe == '(') {
+				pileTransformation.empiler(carInfixe);
+			} else if (carInfixe == ')') {
+				Character carPile = pileTransformation.depiler();
+				while (carPile != '(') {
+					tabPostfixe[indPostfixe] = carPile;
+					indPostfixe++;
+					carPile = pileTransformation.depiler();
+				}
+			} else {
+				Character carPile = pileTransformation.depiler();
+				while (priorite.get(carPile) >= priorite.get(carInfixe)) {
+					tabPostfixe[indPostfixe] = carPile;
+					indPostfixe++;
+					carPile = pileTransformation.depiler();
+				}
+			}
+		}
+		Character carPile = pileTransformation.depiler();
+		while (carPile != '=') {
+			tabPostfixe[indPostfixe] = carPile;
+			indPostfixe++;
+			carPile = pileTransformation.depiler();
+		}
+	}
+
+	/**
+	 * La méthode privée evaluerExpression() permet d'évaluer l'expression
+	 * transformée en postfixe.
+	 */
+
+	private void evaluerExpression() {
+
+		/**
+		 * 
+		 * Vous devez programmer l'algorithme de la page 20 du document 5 qui
+		 * permet d'évaluer une expression arithmétique postfixe
+		 * (this.tabPostfixe). Lisez ce qui suit avant de commencer.
+		 * 
+		 * Vous devez utiliser la classe Pile pour la pileEvaluation.
+		 * 
+		 * Dans la classe Character, la méthode statique isDigit() permet de
+		 * vérifier si un caractère est un chiffre et la méthode statique
+		 * getNumericValue() permet de convertir un caractère numérique en
+		 * nombre entier.
+		 * 
+		 * La méthode doit déposer dans le champ privé this.resultatFinal le
+		 * résultat final de l'expression.
+		 * 
+		 * Vous devez utiliser la méthode privée evaluerOperateur() lorsqu'il
+		 * sera nécessaire d'évaluer un opérateur.
+		 */
+		Pile<Integer> pileEvaluation = new Pile<>();
+		for (char carPostfixe : tabPostfixe) {
+			if (carPostfixe != '=') {
+				if (Character.isDigit(carPostfixe)) {
+					pileEvaluation
+							.empiler(Character.getNumericValue(carPostfixe));
+				} else {
+					int val1Pile = pileEvaluation.depiler();
+					int val2Pile = pileEvaluation.depiler();
+					pileEvaluation.empiler(
+							evaluerOperateur(val2Pile, carPostfixe, val1Pile));
+				}
+			}
+		}
+		resultatFinal = pileEvaluation.depiler();
+	}
+
+	/**
+	 * La méthode privée evaluerOperateur() permet d'évaluer le résultat de
+	 * valeur opérateur valeur.
+	 * 
+	 * @param val2Pile
+	 *            Une valeur.
+	 * @param operateur
+	 *            Un opérateur.
+	 * @param val1Pile
+	 *            Une autre valeur.
+	 * @return Le résultat du calcul.
+	 */
+
+	private int evaluerOperateur(int val2Pile, char operateur, int val1Pile) {
+		int resultat = 0;
+
+		/**
+		 * 
+		 * Vous devez programmer l'algorithme de la page 21 du document 5 qui
+		 * permet d'évaluer le résultat de val2Pile operateur val1Pile.
+		 */
+		switch (operateur) {
+		case '+':
+			resultat = val2Pile + val1Pile;
+			break;
+		case '-':
+			resultat = val2Pile - val1Pile;
+			break;
+		case '*':
+			resultat = val2Pile * val1Pile;
+			break;
+		case '/':
+			if (val1Pile != 0) {
+				resultat = val2Pile / val1Pile;
+			} else {
+				resultat = 0;
+			}
+			break;
+		}
+		return resultat;
+	}
+
+	/**
+	 * La méthode publique afficherExpression() permet d'afficher l'expression
+	 * arithmétique et son résultat.
+	 */
+
+	public void afficherExpression() {
+
+		final String TITRE = "\nExpression arithmétique : ";
+
+		/**
+		 * 
+		 * Vous devez afficher l'expression arithmétique (this.tabInfixe) et son
+		 * résulat (this.resultatFinal) de la façon suivante :
+		 * 
+		 * Vous devez afficher un titre (dans une constante), un espace entre
+		 * chaque caractère de l'expression et un espace autour du symbole =.
+		 * 
+		 * Voici le format d'affichage que vous devez respecter. Les valeurs ne
+		 * sont qu'un exemple.
+		 * 
+		 * Expression Arithmétique : 2 * 3 + 4 * ( 6 - 5 ) = 10
+		 */
+		System.out.print(TITRE);
+		for (char carInfixe : this.tabInfixe) {
+			System.out.print(carInfixe + " ");
+		}
+		System.out.print(this.resultatFinal);
+	}
+}

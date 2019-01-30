@@ -1,0 +1,504 @@
+/**
+ * Auteurs : David et Soti
+ * Fichier : MAJSequentiel.java
+ * Cours   : 420-3A6-MO (TP3, MAJ accès séquentiel)
+ * Date    : 3 octobre 2018
+ */
+
+// Packages.
+import java.io.*;
+
+import outilsjava.*;
+
+/**
+ * La classe MAJSequentiel contient tout ce qu'il faut pour mettre à jour un
+ * fichier maître d'articles de sport avec l'aide d'un fichier de transactions
+ * en utilisant la méthode d'accès séquentiel.
+ */
+
+public class MAJSequentiel {
+	// Champs d'instance de la classe MAJsequentiel.
+
+	// Les différents noms physiques de fichiers.
+
+	private String nomAncFicMaitre;
+	private String nomFicTrans;
+	private String nomNouvFicMaitre;
+	private String nomFicErreur;
+
+	// Les différents noms logiques de fichiers.
+
+	private ObjectInputStream ficEntreeAncMaitre;
+	private ObjectInputStream ficEntreeTrans;
+	private ObjectOutputStream ficSortieNouvMaitre;
+	private BufferedWriter ficSortieErreur;
+
+	// Les différents enregistrements.
+
+	private ArticleSport enregAncMaitre;
+	private ArticleSport enregNouvMaitre;
+	private Transaction enregTrans;
+
+	// Les indicateurs de fin de fichier.
+	private boolean finAncMaitre;
+	private boolean finTrans;
+
+	/**
+	 * Le constructeur MAJSequentiel() permet de mettre à jour un fichier maître
+	 * d'articles de sport avec l'aide d'un fichier de transactions en utilisant
+	 * la méthode d'accès séquentiel. Un nouveau fichier maître sera créé et un
+	 * fichier contenant les erreurs sera également créé.
+	 */
+
+	public MAJSequentiel() {
+		// Constantes du constructeur.
+
+		final String ERREUR_FICHIER = "\nErreur, impossible de faire la mise"
+				+ " à jour, car il y a un problème avec un des fichiers.";
+
+		final String FIN_MAJ = "\nFin de la mise à jour.\n";
+
+		// Code du constructeur.
+
+		boolean ok;
+
+		ok = this.ouvrirLesFichiers();
+
+		if ( !ok ) {
+			System.out.println( ERREUR_FICHIER );
+		} else {
+
+			/**
+			 *
+			 * 
+			 * Vous devez programmer l'algorithme de la page 18 du document 3.
+			 * Lisez ce qui suit avant de commencer.
+			 * 
+			 * Vous devez utiliser les champs d'instance appropriés pour ce qui
+			 * est des booléens, des enregistrements et des noms logiques des
+			 * fichiers.
+			 * 
+			 * Vous devez utiliser la méthode statique de la classe ArticleSport
+			 * pour lire un enregAncMaitre dans l'ancien fichier maître. Vous
+			 * devez envoyer le bon paramètre à la méthode et conserver le
+			 * retour dans le bon champ d'instance.
+			 * 
+			 * Vous devez utiliser la méthode statique de la classe Transaction
+			 * pour lire une transaction dans le fichier des transactions. Vous
+			 * devez envoyer le bon paramètre à la méthode et conserver le
+			 * retour dans le bon champ d'instance.
+			 * 
+			 * Vous devez utiliser la méthode appropriée de l'objet
+			 * enregAncMaitre pour écrire un enregAncMaitre dans le nouveau
+			 * fichier maître. Vous devez envoyer le bon paramètre à la méthode.
+			 * 
+			 * Vous devez exécuter la méthode privée appropriée de cette classe
+			 * pour fermer les quatre fichiers.
+			 */
+			enregAncMaitre = ArticleSport.lireArticleSportFichier( ficEntreeAncMaitre );
+			if ( enregAncMaitre == null ) {
+				finAncMaitre = true;
+			}
+			enregTrans = Transaction.lireTransactionFichier( ficEntreeTrans );
+			if ( enregTrans == null ) {
+				finTrans = true;
+			}
+			while ( !finTrans ) {
+				traiterTransactions();
+			}
+
+			while ( !finAncMaitre ) {
+				enregAncMaitre.ecrireArticleSportFichier( ficSortieNouvMaitre );
+				enregAncMaitre = ArticleSport.lireArticleSportFichier( ficEntreeAncMaitre );
+				if ( enregAncMaitre == null ) {
+					finAncMaitre = true;
+				}
+			}
+			fermerLesFichiers();
+			finAncMaitre = false;
+			finTrans = false;
+			enregAncMaitre = ArticleSport.lireArticleSportFichier( ficEntreeAncMaitre );
+			if ( enregAncMaitre == null ) {
+				finAncMaitre = true;
+			}
+			enregTrans = Transaction.lireTransactionFichier( ficEntreeTrans );
+			if ( enregTrans == null ) {
+				finTrans = true;
+			}
+			while ( !finTrans ) {
+				traiterTransactions();
+			}
+			while ( !finAncMaitre ) {
+				enregAncMaitre.ecrireArticleSportFichier( ficSortieNouvMaitre );
+				enregAncMaitre = ArticleSport.lireArticleSportFichier( ficEntreeAncMaitre );
+				if ( enregAncMaitre == null ) {
+					finAncMaitre = true;
+				}
+			}
+			fermerLesFichiers();
+		}
+
+		System.out.println( FIN_MAJ );
+	}
+
+	/**
+	 * La méthode privée ouvrirLesFichiers() permet de lire les noms physiques
+	 * des différents fichiers et de les ouvrir dans le bon mode.
+	 * 
+	 * @return true si tous les fichiers ont été ouverts correctement et false
+	 *         dans le cas contraire.
+	 */
+
+	private boolean ouvrirLesFichiers() {
+		// Constantes pour les questions des différents noms de fichiers.
+
+		final String QUEST_ANC_MAITRE = "\nEntrez le nom de l'ancien " + "fichier maître : ";
+		final String QUEST_TRANS = "\nEntrez le nom du fichier " + "des transactions : ";
+		final String QUEST_NOUV_MAITRE = "\nEntrez le nom du nouveau " + "fichier maître : ";
+		final String QUEST_ERREUR = "\nEntrez le nom du fichier " + "des erreurs : ";
+
+		boolean ok = false;
+
+		/**
+		 * 
+		 * Vous devez utiliser les champs d'instance appropriés pour ce qui est
+		 * des noms physiques et des noms logiques des fichiers.
+		 * 
+		 * Vous devez utiliser les constantes appropriées pour les différentes
+		 * questions.
+		 * 
+		 * Vous devez utiliser les méthodes appropriées de la classe
+		 * OutilsFichier pour faire le traitement qui suit.
+		 * 
+		 * Vous devez lire le nom de l'ancien fichier maître et ouvrir ce
+		 * fichier en mode binaire-lecture. Si l'ouverture est un succès alors
+		 * vous continuez, sinon vous ne devez pas continuer.
+		 * 
+		 * Vous devez lire le nom du fichier des transactions et ouvrir ce
+		 * fichier en mode binaire-lecture. Si l'ouverture est un succès alors
+		 * vous continuez. Sinon vous devez fermer l'ancien fichier maître et
+		 * vous ne devez pas continuer.
+		 * 
+		 * Vous devez lire le nom du nouveau fichier maître et ouvrir ce fichier
+		 * en mode binaire-écriture. Si l'ouverture est un succès alors vous
+		 * continuez. Sinon vous devez fermer l'ancien fichier maître, fermer le
+		 * fichier des transactions et vous ne devez pas continuer.
+		 * 
+		 * Vous devez lire le nom du fichier des erreurs et ouvrir ce fichier en
+		 * mode texte-écriture. Si l'ouverture est un succès alors la variable
+		 * locale booléenne ok devient true et c'est terminé. Sinon vous devez
+		 * fermer l'ancien fichier maître, fermer le fichier des transactions,
+		 * fermer le nouveau fichier maître et c'est terminé.
+		 * 
+		 * La méthode retourne donc true si tous les fichiers ont été ouverts
+		 * correctement et false dans le cas contraire.
+		 * 
+		 * La méthode doit contenir un seul énoncé return, à la fin de la
+		 * méthode.
+		 */
+
+		if ( ( ficEntreeAncMaitre = OutilsFichier.ouvrirFicBinLecture(
+				nomAncFicMaitre = OutilsFichier.lireNomFichier( QUEST_ANC_MAITRE ) ) ) != null ) {
+			if ( ( ficEntreeTrans = OutilsFichier
+					.ouvrirFicBinLecture( nomFicTrans = OutilsFichier.lireNomFichier( QUEST_TRANS ) ) ) != null ) {
+				if ( ( ficSortieNouvMaitre = OutilsFichier.ouvrirFicBinEcriture(
+						nomNouvFicMaitre = OutilsFichier.lireNomFichier( QUEST_NOUV_MAITRE ) ) ) != null ) {
+					if ( ( ficSortieErreur = OutilsFichier.ouvrirFicTexteEcriture(
+							nomFicErreur = OutilsFichier.lireNomFichier( QUEST_ERREUR ) ) ) != null ) {
+						ok = true;
+					} else {
+						OutilsFichier.fermerFicBinLecture( ficEntreeAncMaitre, nomAncFicMaitre );
+						OutilsFichier.fermerFicBinLecture( ficEntreeTrans, nomFicTrans );
+						OutilsFichier.fermerFicBinEcriture( ficSortieNouvMaitre, nomNouvFicMaitre );
+					}
+				} else {
+					OutilsFichier.fermerFicBinLecture( ficEntreeAncMaitre, nomAncFicMaitre );
+					OutilsFichier.fermerFicBinLecture( ficEntreeTrans, nomFicTrans );
+				}
+			} else {
+				OutilsFichier.fermerFicBinLecture( ficEntreeAncMaitre, nomAncFicMaitre );
+			}
+		}
+
+		return ok;
+	}
+
+	/**
+	 * La méthode privée fermerLesFichiers() permet de fermer tous les fichiers.
+	 */
+
+	private void fermerLesFichiers() {
+
+		/**
+		 *
+		 * 
+		 * Vous devez utiliser les champs d'instance appropriés pour ce qui est
+		 * des noms physiques et des noms logiques des fichiers.
+		 * 
+		 * Vous devez utiliser les méthodes appropriées de la classe
+		 * OutilsFichier pour fermer tous les fichiers. Vous n'avez pas à vous
+		 * soucier du retour de ces méthodes.
+		 */
+		OutilsFichier.fermerFicBinLecture( ficEntreeAncMaitre, nomAncFicMaitre );
+		OutilsFichier.fermerFicBinLecture( ficEntreeTrans, nomFicTrans );
+		OutilsFichier.fermerFicBinEcriture( ficSortieNouvMaitre, nomNouvFicMaitre );
+		OutilsFichier.fermerFicTexteEcriture( ficSortieErreur, nomFicErreur );
+	}
+
+	/**
+	 * La méthode privée traiterTransactions() permet de faire le traitement des
+	 * transactions pour la mise à jour.
+	 */
+
+	private void traiterTransactions() {
+
+		/**
+		 * 
+		 * Vous devez programmer l'algorithme qui se trouve en haut de la page
+		 * 19 du document 3. Lisez ce qui suit avant de commencer.
+		 * 
+		 * Vous devez utiliser les champs d'instance appropriés pour ce qui est
+		 * des booléens, des enregistrements et des noms logiques des fichiers.
+		 * 
+		 * Vous devez utiliser la méthode compareTo() de l'objet enregAncMaitre
+		 * pour comparer la clé de enregAncMaitre avec la clé de enregTrans.
+		 * Voir la méthode compareTo() dans la classe ArticleSport.
+		 * 
+		 * Vous devez utiliser la méthode appropriée de l'objet enregAncMaitre
+		 * pour écrire un enregAncMaitre dans le nouveau fichier maître. Vous
+		 * devez envoyer le bon paramètre à la méthode.
+		 * 
+		 * Vous devez utiliser la méthode statique de la classe ArticleSport
+		 * pour lire un enregAncMaitre dans l'ancien fichier maître. Vous devez
+		 * envoyer le bon paramètre à la méthode et conserver le retour dans le
+		 * bon champ d'instance.
+		 */
+		while ( !finAncMaitre && 0 < enregAncMaitre.compareTo( enregTrans ) ) {
+			enregAncMaitre.ecrireArticleSportFichier( ficSortieNouvMaitre );
+			enregAncMaitre = ArticleSport.lireArticleSportFichier( ficEntreeAncMaitre );
+			if ( enregAncMaitre == null ) {
+				finAncMaitre = true;
+			}
+		}
+		if ( finAncMaitre ) {
+			viderTransactions();
+		} else {
+			appliquerTransactions();
+		}
+
+	}
+
+	/**
+	 * La méthode privée viderTransactions() permet de traiter les transactions
+	 * qui restent à la fin.
+	 */
+
+	private void viderTransactions() {
+
+		/**
+		 *
+		 * 
+		 * Vous devez programmer l'algorithme qui se trouve en bas de la page 19
+		 * du document 3. Lisez ce qui suit avant de commencer.
+		 * 
+		 * Vous devez utiliser les champs d'instance appropriés pour ce qui est
+		 * des booléens, des enregistrements et des noms logiques des fichiers.
+		 * 
+		 * Vous devez utiliser les constantes appropriées de la classe
+		 * Transaction pour les différents codes de transaction.
+		 * 
+		 * Pour créer un enregNouvMaitre avec enregTrans, vous pouvez tout
+		 * simplement faire une conversion explicite de type de enregTrans en
+		 * ArticleSport (la classe Transaction hérite de la classe
+		 * ArticleSport).
+		 * 
+		 * Vous devez utiliser la méthode appropriée de l'objet enregNouvMaitre
+		 * pour écrire un enregNouvMaitre dans le nouveau fichier maître. Vous
+		 * devez envoyer le bon paramètre à la méthode.
+		 * 
+		 * Vous devez utiliser la méthode statique de la classe Transaction pour
+		 * lire une transaction dans le fichier des transactions. Vous devez
+		 * envoyer le bon paramètre à la méthode et conserver le retour dans le
+		 * bon champ d'instance.
+		 * 
+		 * Vous devez utiliser la méthode write() du nom logique du fichier des
+		 * erreurs pour écrire un message d'erreur dans le fichier des erreurs.
+		 * N'oubliez pas d'ajouter un "\n" à la fin du message.
+		 */
+		while ( !finTrans ) {
+			if ( enregTrans.getCode() == Transaction.AJOUTER ) {
+				enregNouvMaitre = (ArticleSport) enregTrans;
+				enregNouvMaitre.ecrireArticleSportFichier( ficSortieNouvMaitre );
+			} else {
+				try {
+					ficSortieErreur.write( "Erreur avec la transaction dont la clé est "
+							+ enregTrans.getNoArticleSport() + " et le code est " + enregTrans.getCode() + ".\n" );
+				} catch ( IOException e ) {
+					e.printStackTrace();
+				}
+			}
+			enregTrans = Transaction.lireTransactionFichier( ficEntreeTrans );
+			if ( enregTrans == null ) {
+				finTrans = true;
+			}
+		}
+	}
+
+	/**
+	 * La méthode privée appliquerTransactions() permet d'appliquer la
+	 * transaction courante.
+	 */
+
+	private void appliquerTransactions() {
+
+		/**
+		 * 
+		 * 
+		 * Vous devez programmer l'algorithme des pages 20 et 21 du document 3.
+		 * Lisez ce qui suit avant de commencer.
+		 * 
+		 * Vous devez utiliser les champs d'instance appropriés pour ce qui est
+		 * des booléens, des enregistrements et des noms logiques des fichiers.
+		 * 
+		 * Vous devez utiliser la méthode equals() de l'objet enregAncMaitre
+		 * pour vérifier l'égalité entre la clé de enregAncMaitre et la clé de
+		 * enregTrans. Voir la méthode equals() dans la classe ArticleSport.
+		 * 
+		 * Vous devez utiliser les constantes appropriées de la classe
+		 * Transaction pour les différents codes de transaction.
+		 * 
+		 * Pour créer un enregNouvMaitre avec enregTrans, vous pouvez tout
+		 * simplement faire une conversion explicite de type de enregTrans en
+		 * ArticleSport (la classe Transaction hérite de la classe
+		 * ArticleSport).
+		 * 
+		 * Vous devez utiliser la méthode appropriée de l'objet enregNouvMaitre
+		 * pour écrire un enregNouvMaitre dans le nouveau fichier maître. Vous
+		 * devez envoyer le bon paramètre à la méthode.
+		 * 
+		 * Vous devez utiliser la méthode statique de la classe ArticleSport
+		 * pour lire un enregAncMaitre dans l'ancien fichier maître. Vous devez
+		 * envoyer le bon paramètre à la méthode et conserver le retour dans le
+		 * bon champ d'instance.
+		 * 
+		 * Vous devez utiliser la méthode compareTo() de l'objet enregAncMaitre
+		 * pour comparer la clé de enregAncMaitre avec la clé de enregTrans.
+		 * Voir la méthode compareTo() dans la classe ArticleSport.
+		 * 
+		 * Vous devez utiliser la méthode statique de la classe Transaction pour
+		 * lire une transaction dans le fichier des transactions. Vous devez
+		 * envoyer le bon paramètre à la méthode et conserver le retour dans le
+		 * bon champ d'instance.
+		 * 
+		 * Vous devez utiliser la méthode write() du nom logique du fichier des
+		 * erreurs pour écrire un message d'erreur dans le fichier des erreurs.
+		 * N'oubliez pas d'ajouter un "\n" à la fin du message.
+		 */
+		/*if ( 0 == enregAncMaitre.compareTo( enregTrans ) ) {
+			switch ( enregTrans.getCode() ) {
+			case Transaction.MODIFIER:
+				enregNouvMaitre = (ArticleSport) enregTrans;
+				enregNouvMaitre.ecrireArticleSportFichier( ficSortieNouvMaitre );
+				enregAncMaitre = ArticleSport.lireArticleSportFichier( ficEntreeAncMaitre );
+				if ( enregAncMaitre == null ) {
+					finAncMaitre = true;
+				}
+				break;
+			case Transaction.AJOUTER:
+				try {
+					ficSortieErreur
+							.write( "Erreur avec la transaction dont la clé est " + enregTrans.getNoArticleSport()
+									+ " et le code est " + enregTrans.getCode() + ", clé existante.\n" );
+				} catch ( IOException e ) {
+					e.printStackTrace();
+				}
+				break;
+			case Transaction.SUPPRIMER:
+				finAncMaitre = ( ( enregAncMaitre = ArticleSport
+						.lireArticleSportFichier( ficEntreeAncMaitre ) ) == null );
+				if(enregAncMaitre == null){
+					finAncMaitre = true;
+				}
+				break;
+			default:
+				try {
+					ficSortieErreur.write( "Erreur avec la transaction dont la clé est "
+							+ enregTrans.getNoArticleSport() + " et le code est " + enregTrans.getCode() + ".\n" );
+				} catch ( IOException e ) {
+					e.printStackTrace();
+				}
+				break;
+
+			}
+		} else if ( enregAncMaitre.compareTo( enregTrans ) < 0 ) {
+			if ( enregTrans.getCode() == Transaction.AJOUTER ) {
+				enregNouvMaitre = (ArticleSport) enregTrans;
+				enregNouvMaitre.ecrireArticleSportFichier( ficSortieNouvMaitre );
+			} else {
+				try {
+					ficSortieErreur
+							.write( "Erreur avec la transaction dont la clé est " + enregTrans.getNoArticleSport()
+									+ " et le code est " + enregTrans.getCode() + ", clé inexistante.\n" );
+				} catch ( IOException e ) {
+					e.printStackTrace();
+				}
+			}
+		}
+		enregTrans = Transaction.lireTransactionFichier( ficEntreeTrans );
+		if ( enregTrans == null ) {
+			finTrans = true;
+		}
+	}*/
+		if ( enregAncMaitre.equals( enregTrans ) ) {
+			switch ( enregTrans.getCode() ) {
+			case Transaction.MODIFIER:
+				enregNouvMaitre = (ArticleSport) enregTrans;
+				enregNouvMaitre.ecrireArticleSportFichier( ficSortieNouvMaitre );
+				enregAncMaitre = ArticleSport.lireArticleSportFichier( ficEntreeAncMaitre );
+				if ( enregAncMaitre == null ) {
+					finAncMaitre = true;
+				}
+				break;
+			case Transaction.AJOUTER:
+				try {
+					ficSortieErreur
+							.write( "Erreur avec la transaction dont la clé est " + enregTrans.getNoArticleSport()
+									+ " et le code est " + enregTrans.getCode() + ", clé existante.\n" );
+				} catch ( IOException e ) {
+					e.printStackTrace();
+				}
+				break;
+			case Transaction.SUPPRIMER:
+				enregAncMaitre = ArticleSport.lireArticleSportFichier( ficEntreeAncMaitre );
+				if ( enregAncMaitre == null ) {
+					finAncMaitre = true;
+				}
+				break;
+			default:
+				try {
+					ficSortieErreur.write( "Erreur avec la transaction dont la clé est "
+							+ enregTrans.getNoArticleSport() + " et le code est " + enregTrans.getCode() + ".\n" );
+				} catch ( IOException e ) {
+					e.printStackTrace();
+				}
+				break;
+			}
+		} else if ( 0 > enregAncMaitre.compareTo( enregTrans ) ) {
+			if ( enregTrans.getCode() == Transaction.AJOUTER ) {
+				enregNouvMaitre = (ArticleSport) enregTrans;
+				enregNouvMaitre.ecrireArticleSportFichier( ficSortieNouvMaitre );
+			} else {
+				try {
+					ficSortieErreur
+							.write( "Erreur avec la transaction dont la clé est " + enregTrans.getNoArticleSport()
+									+ " et le code est " + enregTrans.getCode() + ", clé inexistante.\n" );
+				} catch ( IOException e ) {
+					e.printStackTrace();
+				}
+			}
+			enregTrans = Transaction.lireTransactionFichier( ficEntreeTrans );
+			if ( enregTrans == null ) {
+				finTrans = false;
+			}
+		}
+}

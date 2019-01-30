@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<<<<<<< HEAD
+<refactoring comment="Delete 26 resources" deleteContents="true" description="Delete 26 resources" element1="/asddads" element10="/Exercise6" element11="/Exercise7" element12="/Exercise8" element13="/Exercise9" element14="/Exercises Répétitives" element15="/Exercises Tableaux" element16="/ExRevision" element17="/POO_TP1" element18="/testvisuel" element19="/TP1Struc" element2="/Doc1Ex1" element20="/TP2" element21="/Tp2Exec" element22="/TP3" element23="/TP3_v2" element24="/TP4" element25="/TP4_OrdiBugge" element26="/TP5" element3="/Doc1Ex2" element4="/Doc1Ex3" element5="/Exercise1" element6="/Exercise10" element7="/Exercise11" element8="/Exercise12" element9="/Exercise5" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="26" stamp="1539636757357"/>
+=======
+<refactoring comment="Delete 26 resources" deleteContents="false" description="Delete 26 resources" element1="/asddads" element10="/Exercise6" element11="/Exercise7" element12="/Exercise8" element13="/Exercise9" element14="/Exercises Répétitives" element15="/Exercises Tableaux" element16="/ExRevision" element17="/POO_TP1" element18="/testvisuel" element19="/TP1Struc" element2="/Doc1Ex1" element20="/TP2" element21="/Tp2Exec" element22="/TP3" element23="/TP3_v2" element24="/TP4" element25="/TP4_OrdiBugge" element26="/TP5" element3="/Doc1Ex2" element4="/Doc1Ex3" element5="/Exercise1" element6="/Exercise10" element7="/Exercise11" element8="/Exercise12" element9="/Exercise5" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="26" stamp="1539652221099"/>
+>>>>>>> master
+</session>

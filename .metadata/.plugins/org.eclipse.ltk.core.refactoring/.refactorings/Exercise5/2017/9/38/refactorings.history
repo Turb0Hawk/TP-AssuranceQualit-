@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Exercise5/src/MethodesUtilitaires.java&apos; to &apos;MainMethodesUtilitaires&apos;" description="Rename resource &apos;MethodesUtilitaires.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/MethodesUtilitaires.java" name="MainMethodesUtilitaires" stamp="1505939512268" updateReferences="true"/>
+</session>
