@@ -12,15 +12,6 @@ public class Cv {
 		
 	}
 	
-	public Cv( String nomIn, String prenomIn, String formationIn, int expIn, String[] compIn, String attentesIn ) {
-		this.nom = nomIn;
-		this.prenom = prenomIn;
-		this.formation = formationIn;
-		this.experience = expIn;
-		this.competences = compIn;
-		this.attentes = attentesIn;
-	}
-	
 	public void affiche() {
 
 		System.out.println( "Nom: " + this.nom + "\n" );
