@@ -1,0 +1,345 @@
+/*
+ * Auteurs : Christian Mongeon et David Ringuet
+ * 
+ * Fichier : MainTp5.java
+ * 
+ * Date de remise : 14 décembre 2017
+ */
+
+import java.io.*;
+import java.util.*;
+
+public class MainTp5 {
+	
+	private static final int NB_NUMS = 7;  // Nombre de numéros par combinaison.
+	private static final int NUM_MAX = 53; // Valeur maximum d'un numéro.
+
+	public static void main( String[] args ) throws IOException {
+	
+		final String MENU_LOTTO = "\nLOTTO MOMO\n\n" +
+								  "1. Générer un billet de loterie\n" +
+								  "2. Générer un tirage\n" +
+								  "3. Générer plusieurs tirages\n" +
+								  "4. Quitter\n";
+		
+		final char GENERER_BILLET = '1';
+		final char GENERER_TIRAGE = '2';
+		final char GENERER_PLUSIEURS_TIRAGES = '3';
+		final char QUITTER_LOTTO = '4';
+		
+		final String PAS_DE_BILLET = "\nErreur, vous devez tout d'abord " +
+								     "générer un billet de loterie.";
+		
+		final String FIN_PROG = "\nMerci d'avoir joué au LOTTO MOMO." +
+								"\nFin du programme.";
+		
+		boolean billetGenere = false;
+		
+		int[] billet = null;
+		
+		char choix;
+		
+		System.out.println( "Bienvenue au programme LOTTO MOMO du TP5." );
+		
+		do {
+			System.out.println(MENU_LOTTO);
+			choix = lireCaractereValide("Entrez votre choix : ", '1', '4');
+			switch (choix) {
+				case GENERER_BILLET:
+					billet = genererBillet();
+					billetGenere = true;
+					break;
+				case GENERER_TIRAGE:
+					if(billetGenere){
+						genererTirage(billet);
+					} else {
+						System.out.println(PAS_DE_BILLET);
+					}
+					break;
+				case GENERER_PLUSIEURS_TIRAGES:
+					if(billetGenere){
+						genererPlusieursTirages(billet);
+					} else {
+						System.out.println(PAS_DE_BILLET);
+					}
+					break;
+				case QUITTER_LOTTO:
+					System.out.println(FIN_PROG);
+					break;
+			}
+		} while (!(choix == QUITTER_LOTTO));
+	}
+
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static int[] genererBillet() {
+		int[] tabBillet = new int [NB_NUMS];
+		System.out.println( "\nGénérer un billet de loterie\n\nLOTTO MOMO " +
+		                    "génère au hasard un billet de loterie\nde " +
+				            NB_NUMS + " numéros différents entre 1 et " +
+		                    NUM_MAX + ".\n" );
+		for(int i = 0; i < NB_NUMS; ++i){
+			tabBillet[i] = genererNbHasard(1, NUM_MAX);
+		}
+	}
+
+	// TODO Écrire le commentaire de la méthode.
+		
+	private static int[] genererCombinaison() {
+		int[] tabCombinaison = new int[NB_NUMS];
+		boolean[] tabPresent = new boolean[NUM_MAX];
+		int element;
+
+		for (int i = 0; i < NB_NUMS; ++i) {
+			element = genererNbHasard(1, NUM_MAX);
+			if (!tabPresent[element - 1]) {
+				tabCombinaison[i] = element;
+				tabPresent[element - 1] = true;
+			} else {
+				--i;
+			}
+		}
+
+		trierCombinaison(tabCombinaison);
+		return tabCombinaison;
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static void trierCombinaison( int[] combinaison ) {
+		
+		// TODO Voir la page 6 de l'énoncé.
+	}
+	
+	private static void afficherCombinaison( String titre, int[] combinaison ) {
+	
+		// TODO Voir la page 6 de l'énoncé.
+	}
+
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static void genererTirage( int[] billet ) {
+		
+		
+		GregorianCalendar date = new GregorianCalendar();
+		int annee = date.get( GregorianCalendar.YEAR );
+		int mois = (date.get( GregorianCalendar.MONTH )+1);
+		int jour = date.get( GregorianCalendar.DAY_OF_MONTH );
+		int[] combinGagnante = genererCombinaison();
+		
+		
+		// TODO Voir la page 6 de l'énoncé.
+		
+		verifierBillet(billet, combinGagnante);
+		
+		System.out.println( "\nGénérer un tirage\n" );
+		System.out.println("\nDate du tirage : " + annee + "-" + mois + "-"
+				+ jour);
+		afficherCombinaison("\nCombinaison gagnante : ", combinGagnante);
+		afficherCombinaison("\nVotre billet         : ", billet);
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static int verifierBillet( int[] billet, int[] combinGagnante ) {
+		
+		// TODO Voir la page 7 de l'énoncé.
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static int chercherNumero( int[] billet, int numero ) {
+	
+		// TODO Voir la page 7 de l'énoncé.
+	}
+		
+	private static void genererPlusieursTirages( int[] billet ) 
+															throws IOException {
+		final int MIN_TIRAGES = 2;
+		final int MAX_TIRAGES = 52000000;
+		
+		// TODO Déclaration des variables locales nécessaires.
+				
+		System.out.println( "\nGénérer plusieurs tirages\n" );
+			
+		// TODO Voir les pages 7 et 8 de l'énoncé.
+	}
+	
+	/*
+	 * La méthode lireCaractereValide() permet d'afficher une question
+	 * et de lire un caractère qui fait partie d'un intervalle.
+	 * 
+	 * Paramètres : la question à afficher à l'utilisateur, le caractère 
+	 *              minimum et le caractère maximum.
+	 *              
+	 * Retourne : le caractère lu en majuscule.
+	 */
+
+	private static char lireCaractereValide( String question, char carMin, 
+	                                         char carMax ) throws IOException {
+	    char rep;
+	    boolean valide;
+
+	    // Convertir carMin et carMax en majuscules.
+
+	    carMin = Character.toUpperCase( carMin );
+	    carMax = Character.toUpperCase( carMax );
+
+	    do {
+	        valide = true;
+
+	        // Convertir le caractère lu en majuscule.
+
+	        rep = Character.toUpperCase( lireCaractere( question ) );
+
+	        // Erreur si le caractère lu n'est pas entre carMin et carMax.
+
+	        if ( rep < carMin || rep > carMax ) {
+	            System.out.println( "Erreur, entrez un caractère entre " +
+	                                carMin + " et " + carMax + "." );
+	            valide = false;
+	        }
+	    } while ( !valide );
+
+	    return rep;
+	}
+	
+	/*
+	 * La méthode lireCaractere() permet de lire un et un seul caractère
+	 * sans aucune validation.
+	 *
+ 	 * Paramètre : la question à afficher à l'utilisateur.
+	 *
+	 * Retourne : le caractère lu.
+	 */
+	
+	private static char lireCaractere( String question ) throws IOException {
+		
+		String chaine;
+		boolean valide;
+		int lgChaine;
+
+		do {
+			valide = true;
+			chaine = lireChaine( question );
+			lgChaine = chaine.length();
+
+			// Erreur si le nombre de caractères de la chaîne lue
+			// n'est pas exactement 1.
+			
+			if ( lgChaine != 1 ) {
+				System.out.println( "\nErreur, entrez un seul caractère." );
+				valide = false;
+			}
+		} while ( !valide );
+
+		// Retourne le premier caractère de la chaîne lue.
+		
+		return chaine.charAt( 0 );
+	}
+	
+	/*
+	 * La méthode lireChaine() permet de lire une chaîne en s'assurant
+	 * qu'elle n'est pas vide.
+	 *
+	 * Paramètre : la question à afficher à l'utilisateur.
+	 *
+	 * Retourne : la chaîne de caractères lue.
+	 */
+	
+	private static String lireChaine( String question ) throws IOException {
+		
+		BufferedReader clavier =
+			new BufferedReader( new InputStreamReader( System.in ) );
+		
+		String chaine;
+		boolean valide;
+		int lgChaine;
+		
+		do {
+			valide = true;
+			System.out.print( question );
+	
+			chaine = clavier.readLine();
+			lgChaine = chaine.length();
+
+			// Erreur si la chaîne lue est vide.
+
+			if ( lgChaine == 0 ) {
+				System.out.println( "\nErreur, l'entrée ne doit pas" +
+									" être vide." );
+				valide = false;
+			}
+		} while ( !valide );
+				
+		return chaine;
+	}
+	
+	/*
+	 * La méthode genererNbHasard() permet de générer un nombre entier
+	 * aléatoire entre une borne inférieure et une borne supérieure.
+	 * Ne fonctionne qu'avec des entiers plus grand ou égal à 0.
+	 * 
+	 * Paramètres : la borne inférieure et la borne supérieure. Aucune
+	 *              validation, la borne inférieure doit être plus
+	 *              petite ou égale à la borne supérieure.
+	 * 
+	 * Retourne : un entier au hasard entre les deux bornes.
+	 */
+
+	private static int genererNbHasard( int min, int max ) {
+		
+	    return (int) ( ( Math.random() * ( max - min + 1 ) ) + min );
+	}
+	
+	/*
+	 * La méthode lireEntierValide() permet d'afficher une question et de lire
+	 * un nombre entier qui fait partie d'un intervalle.
+	 * 
+	 * Paramètres : la question à afficher à l'utilisateur, le nombre minimum
+	 *              et le nombre maximum.
+	 * 
+	 * Retourne : le nombre entier lu.
+	 */
+	
+	private static int lireEntierValide( String question, int min, int max )
+			throws IOException {
+
+		boolean valide;
+		int nombreLu;
+
+		do {
+			valide = true;
+
+			nombreLu = lireEntier( question );
+
+			// Erreur si le nombre lu n'est pas entre min et max.
+		
+			if ( nombreLu < min || nombreLu > max ) {
+				System.out.println( "\nErreur, entrez un nombre entier " +
+									"entre " + min + " et " + max );
+				valide = false;
+			}
+		} while ( !valide );
+
+		return nombreLu;
+	}
+	
+	/*
+	 * La méthode lireEntier() permet de lire un entier sans aucune validation.
+	 * 
+	 * Paramètre : la question à afficher à l'utilisateur.
+	 * 
+	 * Retourne : le nombre entier lu.
+	 */
+	
+	private static int lireEntier( String question ) throws IOException {
+		
+		BufferedReader clavier =
+	        new BufferedReader( new InputStreamReader( System.in ) );
+		
+		System.out.print( question );
+		
+		return Integer.parseInt( clavier.readLine() );
+	}
+}

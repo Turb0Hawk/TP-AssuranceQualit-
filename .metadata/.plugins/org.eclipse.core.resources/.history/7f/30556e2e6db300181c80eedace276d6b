@@ -1,0 +1,96 @@
+/*
+ * Auteurs  : David Ringuet et Soti, Groupe : 60
+ * Fichier  : CarreMagiqueRemarquable.java
+ * Date     : 12 avril 2018
+ * Cours    : 420-ZD4-MO (TP4, Carrés Magiques)
+ */
+
+import outilsjava.*;
+
+/*
+ * 
+ *
+ * N'oubliez pas de faire également la documentation Javadoc. Voir en haut
+ * de la page 3 de l'énoncé du TP4.
+ */
+
+/**
+ * Classe qui contient les méthodes nécessaires pour construire un carré magique remarquable.
+ *
+ * @author Soti, David Ringuet
+ * @version 1.0
+ * @see UtilTp4Magique
+ * @see CarreMagiqueNormal
+ */
+public class CarreMagiqueRemarquable {
+
+	/**
+	 * Ce constructeur permet de construire et d'afficher un carré magique remarquable tant que l'utilisateur le désir.
+	 * @see #construireCarreMagiqueRemarquable(int)
+	 *
+	 */
+
+	public CarreMagiqueRemarquable() {
+
+		// Constantes du constructeur.
+		final String TITRE_REMARQUABLE = "\nProduire des carrés magiques " + "remarquables de 4 X 4.";
+
+		final String QUEST_AUTRE_CARRE =
+				"\nVoulez-vous produire un autre " + "carré magique remarquable de 4 X 4 (O ou N) : ";
+
+		final char OUI = 'O';
+
+		final int SOMME_MIN = 22;
+		final int SOMME_MAX = 100;
+
+		final String QUEST_SOMME =
+				"\nEntrez la somme du carré magique" + " remarquable (un nombre entre " + SOMME_MIN + " et " +
+						SOMME_MAX
+						+ ") : ";
+
+		final String TITRE_CARRE = "\n\tCarré magique remarquable de 4 X 4.";
+
+		final String MESS_REMARQUABLE =
+				"\nLe côté remarquable de ce carré " + "magique,\nc’est que l’on trouve la somme un peu partout :\n"
+						+ "sur une ligne, sur une colonne, sur une diagonale,\n"
+						+ "dans les 4 coins et dans le carré central.";
+
+		int[][] tab;
+		int somme;
+		char autreCarreMagique;
+		System.out.println( TITRE_REMARQUABLE );
+		do {
+			somme = OutilsLecture.lireEntierValide( QUEST_SOMME, SOMME_MIN, SOMME_MAX );
+			tab = construireCarreMagiqueRemarquable( somme );
+			System.out.println( TITRE_CARRE );
+			UtilTp4Magique.afficherTab2DAvecSomme( tab, somme );
+			System.out.println( MESS_REMARQUABLE );
+			autreCarreMagique = OutilsLecture.lireOuiNon( QUEST_AUTRE_CARRE );
+		} while ( autreCarreMagique == OUI );
+
+	}
+
+	/**
+	 * Cette méthode permet de construire le tableau de 4 X 4 pour que la somme d'une ligne, d'une colonne, d'une
+	 * diagonale, des 4 coins et du carré central donne la somme choisie.
+	 * @param somme la somme d'une ligne du carré magique
+	 * @return tab le tableau contenant le carré magique
+	 */
+
+	private int[][] construireCarreMagiqueRemarquable( int somme ) {
+
+		// Tableau du carré magique remarquable.
+		// Sur les seize (4 X 4) nombres, il y en douze qui ne changent jamais.
+
+		int[][] tab = { { 0, 1, 12, 7 }, { 11, 8, 0, 2 }, { 5, 10, 3, 0 }, { 4, 0, 6, 9 } };
+
+		int nombre = somme - 20;
+
+		tab[0][0] = nombre;
+		tab[1][2] = ( nombre - 1 );
+		tab[2][3] = ( nombre + 2 );
+		tab[3][1] = ( nombre + 1 );
+
+		return tab;
+	}
+}

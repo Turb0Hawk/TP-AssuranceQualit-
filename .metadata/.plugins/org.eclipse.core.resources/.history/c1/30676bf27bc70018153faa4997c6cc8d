@@ -1,0 +1,135 @@
+/**
+ * Auteure : Soti
+ * Fichier : PrincipalTp3.java
+ * Cours   : 420-3A6-MO (TP3, MAJ accès séquentiel)
+ * Date    : 3 octobre 2018
+ */
+
+// Packages.
+import outilsjava.*;
+
+/**
+ * La classe PrincipalTp3 permet de gérer un menu principal pour le TP3.
+ * Programme de gestion d'articles de sport pour illustrer le concept de mise à
+ * jour avec la méthode d'accès séquentiel.
+ * 
+ * Cette classe implémente l'interface ConstantesCommunes.
+ */
+
+public class PrincipalTp3 implements OutilsConstantes {
+	/**
+	 * Le constructeur PrincipalTp3 permet de gérer un menu principal pour faire
+	 * la création des fichiers nécessaires pour la mise à jour et de visualiser
+	 * ceux-ci. Il permet également de faire la mise à jour en utilisant la
+	 * méthode d'accès séquentiel.
+	 */
+
+	public PrincipalTp3() {
+		// Constantes du constructeur.
+		
+		final String MENU_ARTICLES_SPORT = 
+				"Menu pour la gestion des "
+				+ "articles de sport\n\n"
+				+ "1 : Créer/Visualiser les fichiers pour la mise à jour\n"
+				+ "2 : Mise à jour des articles de sport\n"
+				+ "3 : Quitter le programme";
+
+		final char CREER_VOIR_FIC_MAJ = '1';
+		final char FAIRE_MAJ          = '2';
+		final char QUITTER_PROG       = '3';
+
+		final String MESS_BIENVENUE = "\nBienvenue au programme de "
+						+ "gestion d'articles de sport.\n";
+
+		// Code du constructeur.
+		
+		char choix;
+
+		System.out.println( MESS_BIENVENUE );
+
+		do {
+			choix = OutilsAffichage.afficherChoisirMenu( MENU_ARTICLES_SPORT,
+					CREER_VOIR_FIC_MAJ, QUITTER_PROG );
+
+			switch ( choix ) {
+			case CREER_VOIR_FIC_MAJ:
+				this.creerVoirFicMaj();
+				break;
+
+			case FAIRE_MAJ:
+				new MAJSequentiel();
+				break;
+
+			case QUITTER_PROG:
+				System.out.println( MESS_FIN_PROG );
+				break;
+			}
+		} while ( choix != QUITTER_PROG );
+	}
+
+	/**
+	 * La méthode privée creerVoirFicMaj() permet de faire la création des
+	 * différents fichiers nécessaires et permet également de visualiser
+	 * ceux-ci.
+	 */
+
+	private void creerVoirFicMaj() {
+		// Constantes de la méthode.
+
+		final String MENU_FIC_MAJ = 
+				"\nMenu pour la construction et "
+				+ "la visualisation des fichiers pour la mise à jour\n"
+				+ "(Programme de gestion d'articles de sport)\n\n"
+				+ "1 : Créer un fichier maître\n"
+				+ "2 : Créer un fichier de transactions\n"
+				+ "3 : Visualiser un fichier maître\n"
+				+ "4 : Visualiser un fichier de transactions\n"
+				+ "5 : Visualiser un fichier des erreurs\n"
+				+ "6 : Quitter ce menu";
+
+		final char CREER_FIC_MAITRE      = '1';
+		final char CREER_FIC_TRANSACTION = '2';
+		final char VOIR_FIC_MAITRE       = '3';
+		final char VOIR_FIC_TRANSACTION  = '4';
+		final char VOIR_FIC_ERREUR       = '5';
+		final char QUITTER_FIC_MAJ       = '6';
+
+		final String FIN_SOUS_MENU = "\nFin de ce sous-menu."
+				+ " Retour au menu principal.\n";
+
+		// Code de la méthode.
+
+		char choix;
+
+		do {
+			choix = OutilsAffichage.afficherChoisirMenu( MENU_FIC_MAJ,
+					CREER_FIC_MAITRE, QUITTER_FIC_MAJ );
+
+			switch ( choix ) {
+			case CREER_FIC_MAITRE:
+				new CreerFicMaitre();
+				break;
+
+			case CREER_FIC_TRANSACTION:
+				new CreerFicTransaction();
+				break;
+
+			case VOIR_FIC_MAITRE:
+				new VoirFicMaitre();
+				break;
+
+			case VOIR_FIC_TRANSACTION:
+				new VoirFicTransaction();
+				break;
+
+			case VOIR_FIC_ERREUR:
+				new VoirFicErreur();
+				break;
+
+			case QUITTER_FIC_MAJ:
+				System.out.println( FIN_SOUS_MENU );
+				break;
+			}
+		} while ( choix != QUITTER_FIC_MAJ );
+	}
+}

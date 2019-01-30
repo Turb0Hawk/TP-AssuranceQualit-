@@ -1,0 +1,96 @@
+import java.io.*;
+import MainMe
+
+public class Shortcuts2 {
+
+	public static void main(String[] args) {
+
+	}
+	
+	public double lireDouble( String question ) throws IOException {
+	
+		BufferedReader clavier =
+				new BufferedReader( new InputStreamReader( System.in ) );
+	
+		System.out.print( question );
+		return  Double.parseDouble( clavier.readLine() );
+	
+	}
+	
+	public Integer lireInt( String question ) throws IOException {
+		
+		BufferedReader clavier =
+				new BufferedReader( new InputStreamReader( System.in ) );
+	
+		System.out.print( question );
+		return  Integer.parseInt( clavier.readLine() );
+	
+	}
+	
+	/*lireEntier()
+	/*
+	* La méthode lireEntier() permet de lire un entier sans aucune validation.
+	*
+	* Paramètre : la question à afficher à l'utilisateur.
+	*
+	* Retourne : le nombre entier lu.
+	*//*
+	private static int lireEntier( String question ) throws IOException {
+	BufferedReader clavier =
+	new BufferedReader( new InputStreamReader( System.in ) );
+	System.out.print( question );
+	return Integer.parseInt( clavier.readLine() );
+	}
+	*/
+	
+	/*lireReel()
+	/*
+	* La méthode lireReel() permet de lire un réel sans aucune validation.
+	*
+	* Paramètre : la question à afficher à l'utilisateur.
+	*
+	* Retourne : le nombre réel lu.
+	*//*
+	private static double lireReel( String question ) throws IOException {
+	BufferedReader clavier =
+	new BufferedReader( new InputStreamReader( System.in ) );
+	System.out.print( question );
+	return Double.parseDouble( clavier.readLine() );
+	}
+	*/
+	
+	/* lireChaine()
+	/*
+	* La méthode lireChaine() permet de lire une chaîne sans aucune
+	* validation.
+	*
+	* Paramètre : la question à afficher à l'utilisateur.
+	*
+	* Retourne : la chaîne de caractères lue.
+	*//*
+	private static String lireChaine( String question ) throws IOException {
+	BufferedReader clavier =
+	new BufferedReader( new InputStreamReader( System.in ) );
+	System.out.print( question );
+	return clavier.readLine();
+	}
+	*/
+	
+	/* lireCaractere()
+	/*
+	* La méthode lireCaractere() permet de lire un caractère sans aucune
+	* validation.
+	*
+	* Paramètre : la question à afficher à l'utilisateur.
+	*
+	* Retourne : le caractère lu.
+	*//*
+	private static char lireCaractere( String question ) throws IOException {
+	BufferedReader clavier =
+	new BufferedReader( new InputStreamReader( System.in ) );
+	System.out.print( question );
+	10 © Christian Automne 2017
+	return clavier.readLine().charAt(0);
+	}
+	*/
+}

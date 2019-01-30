@@ -1,0 +1,28 @@
+import java.io.*;
+
+public class Shortcuts2 {
+
+	public static void main(String[] args) {
+
+	}
+	
+	public double lireDouble( String question ) throws IOException {
+	
+		BufferedReader clavier =
+				new BufferedReader( new InputStreamReader( System.in ) );
+	
+		System.out.print( question );
+		return  Double.parseDouble( clavier.readLine() );
+	
+	}
+	
+	public double lireInt( String question ) throws IOException {
+		
+		BufferedReader clavier =
+				new BufferedReader( new InputStreamReader( System.in ) );
+	
+		System.out.print( question );
+		return  Double.parseDouble( clavier.readLine() );
+	
+	}
+}

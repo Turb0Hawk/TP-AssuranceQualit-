@@ -1,0 +1,230 @@
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Choice;
+import javax.swing.JTable;
+import javax.swing.JMenuBar;
+import java.awt.Label;
+import javax.swing.JTextPane;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+
+
+public class MeleeGameInfo {
+
+	private JFrame frmPlayerstats;
+	private JTextField txtPosTierList;
+	private JTextField txtMainDuJoueur;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MeleeGameInfo window = new MeleeGameInfo();
+					window.frmPlayerstats.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public MeleeGameInfo() {
+		initialize();
+		
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmPlayerstats = new JFrame();
+		frmPlayerstats.setTitle("PlayerStats");
+		frmPlayerstats.setBounds(100, 100, 602, 493);
+		frmPlayerstats.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmPlayerstats.getContentPane().setLayout(null);
+		
+		JMenuBar menuEditer = new JMenuBar();
+		menuEditer.setToolTipText("cliquez pour editer les valeurs");
+		menuEditer.setBounds(0, 0, 594, 21);
+		frmPlayerstats.getContentPane().add(menuEditer);
+		
+		JButton btnEditerValeurs = new JButton("\u00C9diter les valeurs");
+		menuEditer.add(btnEditerValeurs);
+		
+		JTextPane txtPaneJoueur = new JTextPane();
+		txtPaneJoueur.setBounds(307, 162, 271, 293);
+		frmPlayerstats.getContentPane().add(txtPaneJoueur);
+		
+		JTextPane txtPanePersonnage = new JTextPane();
+		txtPanePersonnage.setBounds(10, 161, 271, 294);
+		frmPlayerstats.getContentPane().add(txtPanePersonnage);
+		
+		JLabel lblChoixPersonnage = new JLabel("Choix du personnage");
+		lblChoixPersonnage.setBounds(10, 26, 120, 14);
+		frmPlayerstats.getContentPane().add(lblChoixPersonnage);
+		
+		JLabel lblChoixJoueur = new JLabel("Choix du joueur");
+		lblChoixJoueur.setBounds(304, 26, 114, 14);
+		frmPlayerstats.getContentPane().add(lblChoixJoueur);
+		
+		JComboBox comboBoxChoixPersonnage = new JComboBox();
+		comboBoxChoixPersonnage.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				String txtCourrant = (comboBoxChoixPersonnage.getSelectedItem()).toString();
+				String tierPersonnage;
+				switch (txtCourrant){
+				case "Doc Mario":
+					tierPersonnage = "B";
+					break;
+				case "Mario" :
+					tierPersonnage = "B";
+					break;
+				case "Luigi" :
+					tierPersonnage = "B";
+					break;
+				case "DK":
+					tierPersonnage = "C";
+					break;
+				case "Peach":
+					tierPersonnage = "A";
+					break;
+				case "Yoshi":
+					tierPersonnage = "B";
+					break;
+				case "Cpt. Falcon":
+					tierPersonnage = "A";
+					break;
+				case "Ganondorf":
+					tierPersonnage = "B";
+					break;
+				case "Link":
+					tierPersonnage = "C";
+					break;
+				case "Young Link":
+					tierPersonnage = "C";
+					break;
+				case "Sheik":
+					tierPersonnage = "A";
+					break;
+				case "Zelda":
+					tierPersonnage = "D";
+					break;
+				case "Fox":
+					tierPersonnage = "S";
+					break;
+				case "Falco":
+					tierPersonnage = "S";
+					break;
+				case "Ice Climbers":
+					tierPersonnage = "A";
+					break;
+				case "Kirby":
+					tierPersonnage = "D";
+					break;
+				case "Samus":
+					tierPersonnage = "A";
+					break;
+				case "Mr. G&W":
+					tierPersonnage = "D";
+					break;
+				case "Pikachu":
+					tierPersonnage = "A";
+					break;
+				case "Pichu":
+					tierPersonnage = "D";
+					break;
+				case "Mewtwo":
+					tierPersonnage = "D";
+					break;
+				case "Jigglypuff":
+					tierPersonnage = "A";
+					break;
+				case "Marth":
+					tierPersonnage = "S";
+					break;
+				case "Roy":
+					tierPersonnage = "D";
+					break;
+				case "Ness":
+					tierPersonnage = "C";
+					break;
+				default:
+					tierPersonnage = "kek";
+					break;
+				}
+				txtPosTierList.setText(tierPersonnage);
+			}
+		});
+
+		lblChoixPersonnage.setLabelFor(comboBoxChoixPersonnage);
+		comboBoxChoixPersonnage.setMaximumRowCount(26);
+		comboBoxChoixPersonnage.setModel(new DefaultComboBoxModel(new String[] {"Doc Mario", "Mario", "Luigi", "Bowser", "DK", "Peach", "Yoshi ", "Cpt. Falcon", "Ganondorf", "Link", "Young Link", "Sheik", "Zelda", "Fox", "Falco", "Ice Climbers", "Kirby", "Samus ", "Mr. G&W", "Pikachu", "Pichu", "Mewtwo", "Jigglypuff", "Marth", "Roy", "Ness"}));
+		comboBoxChoixPersonnage.setBounds(10, 42, 120, 22);
+		frmPlayerstats.getContentPane().add(comboBoxChoixPersonnage);
+		
+		JComboBox comboBoxChoixJoueur = new JComboBox();
+		lblChoixJoueur.setLabelFor(comboBoxChoixJoueur);
+		comboBoxChoixJoueur.setBounds(304, 42, 114, 22);
+		frmPlayerstats.getContentPane().add(comboBoxChoixJoueur);
+		
+		JLabel lblPositionTierList = new JLabel("Tier:");
+		lblPositionTierList.setBounds(10, 94, 30, 14);
+		frmPlayerstats.getContentPane().add(lblPositionTierList);
+		
+		JComboBox comboBoxChoixToolsPersonnage = new JComboBox();
+		comboBoxChoixToolsPersonnage.setModel(new DefaultComboBoxModel(new String[] {"Neutral", "Recovery"}));
+		comboBoxChoixToolsPersonnage.setBounds(10, 118, 93, 22);
+		frmPlayerstats.getContentPane().add(comboBoxChoixToolsPersonnage);
+		
+		txtPosTierList = new JTextField();
+		txtPosTierList.setEditable(false);
+		lblPositionTierList.setLabelFor(txtPosTierList);
+		txtPosTierList.setBounds(38, 92, 30, 17);
+		frmPlayerstats.getContentPane().add(txtPosTierList);
+		txtPosTierList.setColumns(10);
+		
+		JLabel lblMainDuJoueur = new JLabel("Main:");
+		lblMainDuJoueur.setBounds(304, 91, 30, 14);
+		frmPlayerstats.getContentPane().add(lblMainDuJoueur);
+		
+		txtMainDuJoueur = new JTextField();
+		txtMainDuJoueur.setEditable(false);
+		txtMainDuJoueur.setBounds(334, 88, 86, 20);
+		frmPlayerstats.getContentPane().add(txtMainDuJoueur);
+		txtMainDuJoueur.setColumns(10);
+		
+		JSeparator separatorPersonnage = new JSeparator();
+		separatorPersonnage.setOrientation(SwingConstants.VERTICAL);
+		separatorPersonnage.setBounds(0, 26, 294, 440);
+		frmPlayerstats.getContentPane().add(separatorPersonnage);
+		
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBounds(293, 26, 301, 440);
+		frmPlayerstats.getContentPane().add(separator);
+		
+		JButton btnTestChangement = new JButton("New button");
+		btnTestChangement.setBounds(160, 70, 91, 23);
+		frmPlayerstats.getContentPane().add(btnTestChangement);
+	}
+}
