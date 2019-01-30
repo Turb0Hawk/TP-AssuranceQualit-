@@ -9,8 +9,7 @@ public class Cv {
 	
 	public static void main( String[] args ) {
 		System.out.println( "Bienvenue chez Barette!\n" );
-		Cv david = new Cv( "David", "Ringuet", "Technique Informatique de Gestion", 2, comps, "Un bon cours" );
-		david.affiche();
+		
 	}
 	
 	public Cv( String nomIn, String prenomIn, String formationIn, int expIn, String[] compIn, String attentesIn ) {
