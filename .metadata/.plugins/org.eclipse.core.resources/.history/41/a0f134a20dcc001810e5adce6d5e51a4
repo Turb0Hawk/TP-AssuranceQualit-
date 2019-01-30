@@ -1,0 +1,77 @@
+/**
+ * Auteurs : David et Soti
+ * Fichier : AjouterMembre.java
+ * Cours   : 420-3A6-MO (TP4, MAJ accès direct)
+ * Date    : 18 octobre 2018
+ */
+
+// Packages.
+import java.io.*;
+import java.util.*;
+
+import outilsjava.*;
+
+/**
+ * La classe AjouterMembre permet de faire des ajouts de membres dans le
+ * fichier.
+ */
+
+public class AjouterMembre implements OutilsConstantes {
+
+	// Constante pour le nombre maximum de membres.
+	public static final int MAX_ENREG = 3; // Juste 3 pour les jeux d'essai.
+
+	/**
+	 * Le constructeur AjouterMembre() permet d'ajouter des membres dans le
+	 * fichier et de mettre à jour l'index.
+	 * 
+	 * L'utilisateur peut ajouter au maximum MAX_ENREG membres.
+	 * 
+	 * @param fic
+	 *            Le nom logique du fichier.
+	 * @param tabIndex
+	 *            Le tableau index.
+	 */
+
+	public AjouterMembre( RandomAccessFile fic,
+			              HashMap<String, Integer> tabIndex ) 
+			              throws IOException {
+
+		// Constantes du constructeur.
+
+		final String TITRE = "\nAjout d'un membre.";
+
+		final String ERREUR_PLEIN = "\nErreur, le nombre maximum de membres" +
+				" est atteint.";
+
+		final String AJOUT_TERMINE = "\nAjout terminé. Le nombre maximum "
+				+ "de membres est atteint.";
+
+		final String QUEST_AUTRE_AJOUT = "\nVoulez-vous ajouter un autre "
+				+ "membre (O ou N) ? ";
+
+		// Code du constructeur.
+		
+
+		/**
+		 * TODO (À COMPLÉTER).
+		 * 
+		 * Vous devez programmer l'algorithme de la page 25 du document 3. Lisez
+		 * ce qui suit avant de commencer.
+		 * 
+		 * IMPORTANT !! Consulter les exemples des pages 37 et 38 du document 3,
+		 * ils vous seront très très très très utiles.
+		 * 
+		 * Le titre et les messages d'erreur lorsque le tableau index est plein
+		 * ou devient plein se trouvent dans des constantes déclarées plus haut.
+		 * 
+		 * Vous devez utiliser la méthode lireOuiNon() de la classe
+		 * OutilsLecture pour lire la confirmation pour un autre ajout. La
+		 * question se trouve dans une constante déclarée plus haut.
+		 * 
+		 * Les constantes OUI et NON peuvent être utilisées directement, car
+		 * elles se trouvent dans l'interface OutilsConstantes.
+		 */
+
+	}
+}

@@ -1,0 +1,28 @@
+import java.util.ArrayList;
+
+//import java
+public class Cv {
+	
+	String nom, prenom, Formation, attentes;
+	String[] competences;
+	int experience;
+	//ArrayList<Object> input;
+	
+	public static void main( String[] args ) {
+		// TODO Auto-generated method stub
+		System.out.println( "Bienvenue chez Barette!" );
+	}
+	
+	
+	public Cv (String nomIn, String prenomIn, String formationIn, int expIn, String[] compIn, String attentesIn) {
+		
+	}
+	
+	/*public Cv (ArrayList<Object> input) {
+		
+	}*/
+	
+	public void affiche () {
+		
+	}
+}

@@ -1,0 +1,452 @@
+/*
+ * Auteurs : Christian Mongeon et D
+ * 
+ * Fichier : MainTp3.java
+ * 
+ * Date de remise : 26 octobre 2017
+ */
+
+import java.io.*;
+import java.text.*;
+
+public class MainTp3 {
+	private static final String PROCESSEUR1_TITRE = "Intel Core i3";
+	private static final char   PROCESSEUR1_CAR   = '1';
+	
+	private static final String PROCESSEUR2_TITRE = "Intel Core i5";
+	private static final char   PROCESSEUR2_CAR   = '2';
+	
+	private static final String PROCESSEUR3_TITRE = "Intel Core i7";
+	private static final char   PROCESSEUR3_CAR   = '3';
+	
+	private static final String PROCESSEUR4_TITRE = "AMD Athlon X4";
+	private static final char   PROCESSEUR4_CAR   = '4';
+	
+	private static final double TPS = 0.05;
+	private static final double TVQ = 0.09975;		
+	
+	public static void main( String[] args ) throws IOException {
+	
+		final String MENU = "1. À la semaine\n" +
+							"2. Au mois\n" +
+				            "3. Pour une année\n" +
+				            "4. Quitter le programme\n";
+		
+		final char SEMAINES = '1',
+				   MOIS     = '2',
+				   ANNEE    = '3',
+				   QUITTER  = '4';
+		
+		char choix = QUITTER;
+		
+		System.out.println( "Bienvenue au programme de location de " +
+				            "portable." );
+		
+		do {
+			afficherEntete();
+			System.out.println( MENU );
+			
+			choix = lireCaractere( "Entrez votre choix : " );
+			
+			switch ( choix ) {
+			
+			case SEMAINES :
+				traiterSemaines();
+				break;
+				
+			case MOIS :
+				traiterMois();
+				break;
+			
+			case ANNEE :
+				// TODO voir page 6 de l'énoncé.
+				traiterAnnee();
+				break;
+				
+			case QUITTER :
+				System.out.print( "\nFin du programme\n" );
+				break;
+				
+			default:
+				System.out.println( "\nChoix invalide : " + choix + "\n" );
+				break;
+			}
+		} while ( choix != QUITTER );
+	}
+
+	// 
+		
+	private static void afficherEntete() {
+		
+		System.out.println( "\nFRAIS D'UTILISATION D'UN ORDINATEUR " +
+				            "PORTABLE\n" );	
+	}
+	
+	// 
+	
+	private static void traiterSemaines() throws IOException {
+		int semaines;
+		
+		double totalSemaine = traiterUneSemaine(); 
+		
+		semaines = lireEntier ("\nEntrez le nombre de semaines : ");
+		System.out.println("\nFrais d'utilisation pour " + semaines +
+							" semaine(s) : " + formaterMonetaire(
+											  ( semaines * totalSemaine), 2 ) );
+	}
+	
+	// 
+	 /*double fraisDeBase, 
+		char processeur, double coutProcesseur, int tailleDisqueSsd, 
+		double coutDisqueSsd, boolean assurance, double coutAssurance,
+		double sousTotal, double tps, double tvq, double totalSemaine */
+	
+	private static double traiterUneSemaine() throws IOException {
+		final double FRAIS_ASSURANCE = 0.039;
+		double fraisDeBase = 23.99, coutProcesseur, coutAssurance,
+				coutDisqueSsd, sousTotal, tps, tvq, totalSemaine;
+		char processeur;
+		int tailleDisqueSsd;
+		boolean assurance = false;
+		// TODO Voir page 7 de l'énoncé.	
+		
+		System.out.println("\nCHOIX DES OPTIONS\n");
+		
+		coutProcesseur = calculerCoutProcesseur(
+											(processeur = lireProcesseur()));
+		coutDisqueSsd = calculerCoutDisqueSsd((tailleDisqueSsd = 
+							lireEntier("Quelle est la taille souhaitée " +
+										"du disque SSD (en Go) : ")));
+		sousTotal = fraisDeBase + coutProcesseur + coutDisqueSsd;
+		
+		if (assurance = assuranceRequise(FRAIS_ASSURANCE)) {
+			
+			coutAssurance = calculerTaxe( sousTotal, FRAIS_ASSURANCE);
+			
+		} else {
+			
+			coutAssurance = 0;
+		}
+		sousTotal = sousTotal + coutAssurance;
+		tps = calculerTaxe( sousTotal, TPS );
+		tvq = calculerTaxe( ( sousTotal ), TVQ );
+		totalSemaine = sousTotal + tps + tvq;
+		
+		afficherInfosSemaine(  fraisDeBase, processeur, coutProcesseur, 
+								tailleDisqueSsd, coutDisqueSsd, assurance,
+								coutAssurance, sousTotal, tps, tvq, 
+								totalSemaine);
+		
+		return totalSemaine;
+	}
+		
+	// 
+	
+	private static char lireProcesseur() throws IOException {
+		char choix;
+		boolean valide;
+		final String MENU = "Processeurs disponibles\n\n" +
+							"1. " + PROCESSEUR1_TITRE + "\n" +
+							"2. " + PROCESSEUR2_TITRE + "\n" +
+							"3. " + PROCESSEUR3_TITRE + "\n" +
+							"4. " + PROCESSEUR4_TITRE + "\n";
+		
+		
+		do { 
+			
+			System.out.println(MENU);
+			
+			choix = lireCaractere("Entrez votre choix : ");
+			
+			if (( choix >= PROCESSEUR1_CAR ) && (choix <= PROCESSEUR4_CAR )) {	
+				
+				valide = true;
+			
+			} else {
+				
+				System.out.println( "\nErreur, choix invalide : " + 
+									choix + "\n" );
+				valide = false;
+			}
+			
+		} while ( !valide );	
+		return choix;
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static double calculerCoutProcesseur( char processeur ) {
+		final double RABAIS_I3 = -6.25, RABAIS_I5 = 0, RABAIS_I7 = +6.99,
+		RABAIS_X4 = -6.00;
+		
+		double coutProcesseur;
+		
+		switch (processeur) {
+		
+		case PROCESSEUR1_CAR :
+			coutProcesseur = RABAIS_I3;
+			break;
+		
+		case PROCESSEUR2_CAR :
+			coutProcesseur = RABAIS_I5;
+			break;
+		
+		case PROCESSEUR3_CAR :
+			coutProcesseur = RABAIS_I7;
+			break;
+		
+		case PROCESSEUR4_CAR :
+			coutProcesseur = RABAIS_X4;
+			break;	
+			
+		default  :
+			System.out.println("Erreur methode calculerCoutProcesseur");
+			coutProcesseur = 0;
+			break;			
+		}		
+		return coutProcesseur;
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static double calculerCoutDisqueSsd( int tailleDisqueSsd ) {
+		double coutSsd;
+		if (tailleDisqueSsd <= 256) {
+			coutSsd = -4.25;
+		} else if (( 256 < tailleDisqueSsd ) && ( tailleDisqueSsd <= 512 )) {
+			coutSsd = + 0;
+		} else if ((512 < tailleDisqueSsd) && ( tailleDisqueSsd <=768)) {
+			coutSsd = +4.99;
+		} else if (tailleDisqueSsd > 768){
+			coutSsd = +8.99;
+		} else {
+			System.out.println("erreur dans methode calculerCoutDisque");
+			coutSsd = 0;
+		}
+		return coutSsd;
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static boolean assuranceRequise( double tauxAssurance ) 
+											 throws IOException {
+		boolean assurance;
+		
+		System.out.println("\nIl est possible d'assurer le portable pour la " +
+				 			"durée de la location au coût de " +
+				 			formaterPourcentage(tauxAssurance, 1) + 
+				 			" du sous-total avant taxes.");
+		
+		if ((lireCaractere("\nDésirez-vous assurer le portable " +
+				 					"(o ou n) : ")) == 'o') {
+			
+			assurance = true;
+			
+		} else {
+			
+			assurance = false;
+			
+		}
+		return  assurance;
+	}
+		
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static double calculerTaxe( double montant, double tauxTaxe ) {
+		return ( montant * tauxTaxe );
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static void afficherInfosSemaine( double fraisDeBase, 
+		char processeur, double coutProcesseur, int tailleDisqueSsd, 
+		double coutDisqueSsd, boolean assurance, double coutAssurance,
+		double sousTotal, double tps, double tvq, double totalSemaine ) {
+		String processeurNom;
+		
+		afficherEntete();
+		
+		switch (processeur) {
+		
+		case PROCESSEUR1_CAR :
+			processeurNom = PROCESSEUR1_TITRE;
+			break;
+		
+		case PROCESSEUR2_CAR :
+			processeurNom = PROCESSEUR2_TITRE;
+			break;
+		
+		case PROCESSEUR3_CAR :
+			processeurNom = PROCESSEUR3_TITRE;
+			break;
+		
+		case PROCESSEUR4_CAR :
+			processeurNom = PROCESSEUR4_TITRE;
+			break;	
+			
+		default  :
+			System.out.println("Erreur methode afficherInfosSemaine");
+			processeurNom = "";
+			break;	
+				
+		}
+		
+		System.out.println( "Processeur :             " + processeurNom );
+		System.out.println( "Taille du disque SSD :   " + tailleDisqueSsd );
+		
+		if (assurance) {
+			System.out.println( "\nLe portable est assuré pour " +
+					 				"la durée de la location." );
+		} else {
+		System.out.println( "\nLe client a refusé l'assurance." );
+		}
+		
+		System.out.println( "\nFrais de base :          " + 
+										formaterMonetaire( fraisDeBase, 2 ));
+		System.out.println( "Frais processeur :       " + 
+									formaterMonetaire( coutProcesseur, 2 ) );
+		System.out.println( "Frais disque SSD :       "  +
+										formaterMonetaire( coutDisqueSsd, 2 ));
+		if (assurance) {
+			System.out.println( "Frais d'assurance :      "  + 
+									formaterMonetaire( coutAssurance, 2 ));
+		}
+		
+		System.out.println( "\n\nSous-total :             "  +
+											formaterMonetaire( sousTotal, 2 ));
+		System.out.println( "TPS :                    "  + 
+											formaterMonetaire( tps, 2 ));
+		System.out.println( "TVQ :                    "  + 
+											formaterMonetaire( tvq, 2 ));
+		System.out.println( "\nTotal par semaine :      " + 
+										formaterMonetaire( totalSemaine, 2 ) );
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static void traiterMois() throws IOException {
+		final double RABAIS_MOIS = 0.145;
+		double sousTotMois = traiterUnMois(), 
+				coutRabais = calculerTaxe(sousTotMois, RABAIS_MOIS), totMois, 
+				totUnMois = ( sousTotMois - coutRabais );
+		
+		int nbMois;
+		
+		System.out.println( "Rabais (" + formaterPourcentage( RABAIS_MOIS, 1 ) +
+								") :        " + 
+											formaterMonetaire( coutRabais, 2 ));
+		System.out.println( "Total par mois :         " + 
+							  formaterMonetaire( totUnMois, 2 ));
+
+		totMois = totUnMois * 
+					(nbMois = lireEntier( "\nEntrez le nombre de mois : " ));
+		System.out.println("\nFrais pour " + nbMois + " mois :      " + 
+											formaterMonetaire( totMois, 2 ));		
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static double traiterUnMois() throws IOException {
+		double sousTotmois = traiterUneSemaine() * 4;
+		
+		System.out.println( "\nSous-total par mois :    " +
+										formaterMonetaire( sousTotmois, 2 ));
+		
+		return sousTotmois;
+	}
+	
+	// TODO Écrire le commentaire de la méthode.
+	
+	private static void traiterAnnee() throws IOException {	
+		final double RABAIS_ANNEE = 0.29;
+		final int NB_MOIS_ANNEE = 12;
+		
+		double sousTotMois = traiterUnMois(), 
+				sousTotAnnee = sousTotMois * NB_MOIS_ANNEE, 
+				coutRabais = calculerTaxe( sousTotAnnee, RABAIS_ANNEE ),
+				totAnnee = sousTotAnnee - coutRabais;
+		
+		System.out.println("\nSous-Total annuel :      " + 
+										formaterMonetaire( sousTotAnnee, 2 ));
+		System.out.println("Rabais annuel (" + 
+							formaterPourcentage( RABAIS_ANNEE, 1 ) + ") : " + 
+							formaterMonetaire( coutRabais, 2 ));
+		System.out.println("\nFrais annuels :          " + 
+											formaterMonetaire( totAnnee, 2 ));
+	}
+	
+	/*
+	 * La méthode lireCaractere() permet de lire un caractère sans aucune
+	 * validation.
+	 *
+ 	 * Paramètre : la question à afficher à l'utilisateur.
+	 *
+	 * Retourne : le caractère lu.
+	 */
+	
+	private static char lireCaractere( String question ) throws IOException {
+		BufferedReader clavier =
+			new BufferedReader( new InputStreamReader( System.in ) );
+		
+		System.out.print( question );
+	
+		return clavier.readLine().charAt(0);
+	}
+
+	/*
+	 * La méthode lireEntier() permet de lire un entier sans aucune validation.
+	 * 
+	 * Paramètre : la question à afficher à l'utilisateur.
+	 * 
+	 * Retourne : le nombre entier lu.
+	 */
+	
+	private static int lireEntier( String question ) throws IOException {
+		BufferedReader clavier =
+	        new BufferedReader( new InputStreamReader( System.in ) );
+		
+		System.out.print( question );
+		
+		return Integer.parseInt( clavier.readLine() );
+	}
+	
+	/*
+	 * La méthode formaterMonetaire() permet de formater un
+	 * nombre dans le format 9 999,99 $.
+	 * 
+	 * Paramètres : le nombre à formater et le nombre de décimales 
+	 *              à mettre après la virgule.
+	 *              
+	 * Retourne : la chaîne de caractères contenant le nombre formaté.
+	 */
+	
+	private static String formaterMonetaire( double nb, int dec ) {
+		NumberFormat formatNb = NumberFormat.getCurrencyInstance();
+
+		formatNb.setMinimumIntegerDigits( 1 );
+		formatNb.setMinimumFractionDigits( dec );
+		formatNb.setMaximumFractionDigits( dec );
+
+		return formatNb.format( nb );
+	}
+	
+	/*
+	 * La méthode formaterPourcentage() permet de formater un
+	 * nombre dans le format 9 999,99 %.
+	 * 
+	 * Paramètres : le nombre à formater et le nombre de décimales 
+	 *              à mettre après la virgule.
+	 *              
+	 * Retourne : la chaîne de caractères contenant le nombre formaté.
+	 */
+	
+	private static String formaterPourcentage( double nb, int dec ) {
+		NumberFormat formatNb = NumberFormat.getPercentInstance();
+
+		formatNb.setMinimumIntegerDigits( 1 );
+		formatNb.setMinimumFractionDigits( dec );
+		formatNb.setMaximumFractionDigits( dec );
+
+		return formatNb.format( nb );
+	}
+}

@@ -1,0 +1,89 @@
+/*
+ * Auteurs  : David Ringuet et Soti, Groupe : 60
+ * Fichier  : UtilTp4Magique.java
+ * Date     : 12 avril 2018
+ * Cours    : 420-ZD4-MO (TP4, Carrés Magiques)
+ */
+
+
+/**
+ * Classe qui contient des méthodes utilitaires pour le TP4 (carrés magiques).
+ * 
+ * @author soti, David Ringuet
+ * @version 1.0
+ * @see CarreMagiqueNormal
+ * @see CarreMagiqueRemarquable
+ */
+public class UtilTp4Magique {
+	
+	/**
+	 * On définit le constructeur private pour empêcher la création d'instances
+	 * de la classe UtilTp4Magique.
+	 */
+	private UtilTp4Magique() {
+	}
+
+	/**
+	 * Méthode qui permet d'afficher une chaîne de caractères un certain nombre
+	 * de fois sur la même ligne.
+	 * 
+	 * @param chaine
+	 *            La chaîne à afficher.
+	 * @param nbFois
+	 *            Le nombre de fois que la chaîne doit être affichée.
+	 */
+	private static void ecrireSuiteChaine( String chaine, int nbFois ) {
+
+		for ( int i = 1; i <= nbFois; ++i ) {
+			System.out.print( chaine );
+		}
+	}
+
+	/**
+	 * Méthode qui affiche un tableau 2D représentant un carré magique. La
+	 * méthode affiche le carré magique avec des encadrés autour des nombres. La
+	 * méthode affiche également la somme des lignes, des colonnes et des
+	 * diagonales. La somme est la même.
+	 * 
+	 * @param tab
+	 *            Le tableau 2D de nombres entiers représentant le carré
+	 *            magique.
+	 * @param somme
+	 *            La somme du carré magique.
+	 *            
+	 * @see #ecrireSuiteChaine
+	 */
+	public static void afficherTab2DAvecSomme( int[][] tab, int somme ) {
+
+		// Constantes de la méthode.
+		final String TABULATION = "\t";
+		final String DESSIN_AVANT = " _______";
+		final String DESSIN_PENDANT = "|_______";
+		final String BARRE = "| ";
+		final String SOMME_DIAG = "   " + somme + TABULATION + "  ";
+		final String SOMME_COL = somme + TABULATION + "  ";
+		final String SOMME_LIGNE = BARRE + somme;
+
+		int indiceColonne = 0, indiceLigne = 0;
+
+		System.out.print(TABULATION);
+		ecrireSuiteChaine(DESSIN_AVANT, tab.length);
+		System.out.println();
+		for (indiceLigne = 0; indiceLigne < tab.length; ++indiceLigne) {
+			System.out.print(TABULATION);
+			for (indiceColonne = 0; indiceColonne < tab.length; ++indiceColonne) {
+// TODO No forgetthi to tell the techer its a idea bug... WOrks at home ??? (if language is EN US ???????? maybe ??)
+				System.out.print(BARRE + tab[indiceLigne][indiceColonne] + " " + TABULATION);
+			}
+			System.out.println(SOMME_LIGNE);
+			System.out.print(TABULATION);
+			ecrireSuiteChaine(DESSIN_PENDANT, indiceColonne);
+			System.out.println(BARRE);
+		}
+		System.out.print(SOMME_DIAG);
+		ecrireSuiteChaine(SOMME_COL, (indiceColonne + 1));
+		System.out.println();
+		
+		
+	}
+}
