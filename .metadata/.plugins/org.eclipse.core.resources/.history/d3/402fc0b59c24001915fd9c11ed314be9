@@ -1,9 +1,0 @@
-
-public class Cv {
-	
-	String nom, Prenom, Formation, attentes;
-	String[] competences;
-	int experience;
-	
-	
-}

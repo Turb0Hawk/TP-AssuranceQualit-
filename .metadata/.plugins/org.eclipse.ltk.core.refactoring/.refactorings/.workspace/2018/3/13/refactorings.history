@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete 13 resources" deleteContents="false" description="Delete 13 resources" element1="/asddads/src/outilsjava" element10="/asddads/src/PrincipalTp3.java" element11="/asddads/src/RaspberryPi.java" element12="/asddads/src/SupprimerRaspberryPi.java" element13="/asddads/src/TabRaspberryPi.java" element2="/asddads/src/AfficherMoyenne.java" element3="/asddads/src/AfficherPetitGrand.java" element4="/asddads/src/AjouterRaspberryPi.java" element5="/asddads/src/ConsulterLimite.java" element6="/asddads/src/ConsulterRaspberryPi.java" element7="/asddads/src/ConsulterTousRaspberryPi.java" element8="/asddads/src/MainTp3.java" element9="/asddads/src/ModifierRaspberryPi.java" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="13" stamp="1522344507570"/>
-</session>

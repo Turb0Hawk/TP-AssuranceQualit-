@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;ShortcutsV2/src/shortcuts&apos; to &apos;shortcutsv2&apos;" description="Rename resource &apos;shortcuts&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/shortcuts" name="shortcutsv2" stamp="1505840199749" updateReferences="true"/>
-</session>

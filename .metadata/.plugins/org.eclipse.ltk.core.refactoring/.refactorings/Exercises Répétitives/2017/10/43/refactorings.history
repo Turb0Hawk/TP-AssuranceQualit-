@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;Exercises Répétitives/src/MainExerciseRepetitive.java&apos; to &apos;MainRepetitive.java&apos;" description="Rename resource &apos;MainExerciseRepetitive.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/MainExerciseRepetitive.java" name="MainRepetitive.java" stamp="1509125489594" updateReferences="true"/>
-</session>

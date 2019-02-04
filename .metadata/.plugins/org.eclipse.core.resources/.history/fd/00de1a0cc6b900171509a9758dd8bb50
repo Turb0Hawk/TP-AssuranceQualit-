@@ -1,324 +1,0 @@
-/*
- * Auteurs : Christian Mongeon et TODO
- * 
- * Fichier : MainTp3.java
- * 
- * Date de remise : 26 octobre 2017
- */
-
-import java.io.*;
-import java.text.*;
-
-public class MainTp3 {
-
-	private static final String PROCESSEUR1_TITRE = "Intel Core i3";
-	private static final char   PROCESSEUR1_CAR   = '1';
-	
-	private static final String PROCESSEUR2_TITRE = "Intel Core i5";
-	private static final char   PROCESSEUR2_CAR   = '2';
-	
-	private static final String PROCESSEUR3_TITRE = "Intel Core i7";
-	private static final char   PROCESSEUR3_CAR   = '3';
-	
-	private static final String PROCESSEUR4_TITRE = "AMD Athlon X4";
-	private static final char   PROCESSEUR4_CAR   = '4';
-	
-	private static final double TPS = 5;
-	private static final double TVQ = 9.975;		
-	
-	public static void main( String[] args ) throws IOException {
-	
-		final String MENU = "1. ¿ la semaine\n" +
-							"2. Au mois\n" +
-				            "3. Pour une annÈe\n" +
-				            "4. Quitter le programme\n";
-		
-		final char SEMAINES = '1',
-				   MOIS     = '2',
-				   ANNEE    = '3',
-				   QUITTER  = '4';
-		
-		char choix = QUITTER;
-		
-		System.out.println( "Bienvenue au programme de location de " +
-				            "portable." );
-		
-		do {
-			afficherEntete();
-			System.out.println( MENU );
-			
-			choix = lireCaractere( "Entrez votre choix : " );
-			
-			switch ( choix ) {
-			
-			case SEMAINES :
-				traiterSemaines();
-				break;
-				
-			case MOIS :
-				// TODO voir page 6 de l'ÈnoncÈ.
-				break;
-			
-			case ANNEE :
-				// TODO voir page 6 de l'ÈnoncÈ.
-				break;
-				
-			case QUITTER :
-				System.out.print( "\nFin du programme\n" );
-				break;
-				
-			default:
-				System.out.println( "\nChoix invalide : " + choix + "\n" );
-				break;
-			}
-		} while ( choix != QUITTER );
-	}
-
-	// TODO …crire le commentaire de la mÈthode.
-		
-	private static void afficherEntete() {
-		
-		System.out.println( "\nFRAIS D'UTILISATION D'UN ORDINATEUR " +
-				            "PORTABLE\n" );	
-	}
-	
-	// TODO …crire le commentaire de la mÈthode.
-	
-	private static void traiterSemaines() throws IOException {
-		// TODO Voir page 6 de l'ÈnoncÈ.
-		int semaines;
-		
-		double totalSemaine = traiterUneSemaine(); 
-		
-		semaines = lireEntier ("Entrez le nombre de semaines : ");
-		System.out.println("Frais d'utilisation pour " + semaines +
-							" semaine(s) : " + (semaines * totalSemaine) );
-	}
-	
-	// TODO …crire le commentaire de la mÈthode.
-	 /*double fraisDeBase, 
-		char processeur, double coutProcesseur, int tailleDisqueSsd, 
-		double coutDisqueSsd, boolean assurance, double coutAssurance,
-		double sousTotal, double tps, double tvq, double totalSemaine */
-	
-	private static double traiterUneSemaine() throws IOException {
-		final double FRAIS_ASSURANCE = 3.9;
-		double fraisDeBase = 23.99, coutProcesseur, coutAssurance,
-				coutDisqueSsd, sousTotal, tps, tvq, totalSemaine;
-		char processeur;
-		int tailleDisqueSsd;
-		boolean assurance = false;
-		// TODO Voir page 7 de l'ÈnoncÈ.	
-		
-		System.out.println("\nCHOIX DES OPTIONS\n");
-		
-		coutProcesseur = calculerCoutProcesseur(
-											(processeur = lireProcesseur()));
-		tailleDisqueSsd = lireEntier("Quelle est la taille souhaitÈe " +
-										 "du disque SSD (en Go) : ");
-		coutDisqueSsd = calculerCoutDisqueSsd((tailleDisqueSsd = 
-							lireEntier("Quelle est la taille souhaitÈe " +
-										"du disque SSD (en Go) : ")));
-		sousTotal = fraisDeBase + coutProcesseur + coutDisqueSsd;
-		
-		if (assuranceRequise(FRAIS_ASSURANCE)) {
-			
-			coutAssurance = calculerTaxe( sousTotal, FRAIS_ASSURANCE);
-			
-		} else {
-			
-			coutAssurance = 0;
-		}
-		sousTotal = sousTotal + coutAssurance;
-		tps = calculerTaxe( sousTotal, TPS );
-		tvq = calculerTaxe( (sousTotal + tps), TVQ );
-		totalSemaine = sousTotal + tps + tvq;
-		
-		afficherInfosSemaine(  fraisDeBase, processeur, coutProcesseur, 
-								tailleDisqueSsd, coutDisqueSsd, assurance,
-								coutAssurance, sousTotal, tps, tvq, 
-								totalSemaine);
-		
-		return totalSemaine;
-	}
-		
-	// TODO …crire le commentaire de la mÈthode.
-	
-	private static char lireProcesseur() throws IOException {
-		
-		char choix;
-		boolean valide = true;
-		final String MENU = "Processeurs disponibles\n\n" +
-							"1. " + PROCESSEUR1_TITRE + "\n" +
-							"2. " + PROCESSEUR2_TITRE + "\n" +
-							"3. " + PROCESSEUR3_TITRE + "\n" +
-							"4. " + PROCESSEUR4_TITRE + "\n";
-		
-		
-		do { 
-			
-			System.out.println(MENU);
-			
-			choix = lireCaractere("Entrez votre choix : ");
-			
-			if (( choix < PROCESSEUR1_CAR ) || (choix > PROCESSEUR4_CAR )) {	
-				
-				choix = '0';
-				valide = false;
-			}
-			
-		} while ( !valide );
-			
-		return choix;
-	}
-	
-	// TODO …crire le commentaire de la mÈthode.
-	
-	private static double calculerCoutProcesseur( char processeur ) {
-		
-		// TODO Voir page 8 de l'ÈnoncÈ.	
-		final double RABAIS_I3 = -6.25, RABAIS_I5 = 0, RABAIS_I7 = +6.99,
-		RABAIS_X4 = -6.00;
-		
-		double coutProcesseur;
-		
-		switch (processeur) {
-		
-		case PROCESSEUR1_CAR :
-			coutProcesseur = RABAIS_I3;
-			break;
-		
-		case PROCESSEUR2_CAR :
-			coutProcesseur = RABAIS_I5;
-			break;
-		
-		case PROCESSEUR3_CAR :
-			coutProcesseur = RABAIS_I7;
-			break;
-		
-		case PROCESSEUR4_CAR :
-			coutProcesseur = RABAIS_X4;
-			break;	
-			
-		default  :
-			System.out.println("Erreur methode calculerCoutProcesseur");
-			coutProcesseur = 0;
-			break;	
-				
-		}		
-		
-		return coutProcesseur;
-	}
-	
-	// TODO …crire le commentaire de la mÈthode.
-	
-	private static double calculerCoutDisqueSsd( int tailleDisqueSsd ) {
-		
-		// TODO Voir page 8 de l'ÈnoncÈ.
-		double coutSsd;
-		if (!(tailleDisqueSsd < 256)) {
-			coutSsd = -4.25;
-		} else if (( 256 < tailleDisqueSsd ) && ( tailleDisqueSsd <= 512 )) {
-			coutSsd = + 0;
-		} else if ((512 < tailleDisqueSsd) && ( tailleDisqueSsd <=768)) {
-			coutSsd = +4.99;
-		} else if (tailleDisqueSsd > 768){
-			coutSsd = +8.99;
-		} else {
-			System.out.println("erreur dans methode calculerCoutDisque");
-			coutSsd = 0;
-		}
-		return coutSsd;
-	}
-	
-	// TODO …crire le commentaire de la mÈthode.
-	
-	private static boolean assuranceRequise( double tauxAssurance ) 
-											 throws IOException {
-		
-		// TODO Voir page 8 de l'ÈnoncÈ.
-		//char choix;
-		boolean assurance;
-		
-		System.out.println("Il est possible d'assurer le portable pour la" +
-				 			"durÈe de la location au co˚t de " +
-				 			formaterPourcentage(tauxAssurance, 1) + 
-				 			" du sous-total avant taxes.");
-		//choix = lireCaractere("DÈsirez-vous assurer le portable (o ou n) : ");
-		
-		if ((/*choix = */lireCaractere("DÈsirez-vous assurer le portable " +
-				 					"(o ou n) : ")) == 'o') {
-			
-			assurance = true;
-			
-		} else {
-			
-			assurance = false;
-			
-		}
-		return  assurance;
-	}
-		
-	// TODO …crire le commentaire de la mÈthode.
-	
-	private static double calculerTaxe( double montant, double tauxTaxe ) {
-		return ( montant * tauxTaxe );
-	}
-	
-	// TODO …crire le commentaire de la mÈthode.
-	
-	private static void afficherInfosSemaine( double fraisDeBase, 
-		char processeur, double coutProcesseur, int tailleDisqueSsd, 
-		double coutDisqueSsd, boolean assurance, double coutAssurance,
-		double sousTotal, double tps, double tvq, double totalSemaine ) {
-		
-		afficherEntete();
-		System.out.println();
-		/*Processeur : Intel Core i5
-		Taille du disque SSD : 512
-		Le client a refusÈ l'assurance.
-		Frais de base : 23,99 $
-		12
-		Frais processeur : 0,00 $
-		Frais disque SSD : 0,00 $
-		Sous-total : 23,99 $
-		TPS : 1,20 $
-		TVQ : 2,39 $
-		Total par semaine : 27,58 $*/
-		
-		/*Processeur : AMD Athlon X4
-		Taille du disque SSD : 769
-		Le client a refusÈ l'assurance.
-		Frais de base : 23,99 $
-		Frais processeur : (6,00$)
-		14
-		Frais disque SSD : 8,99 $
-		Sous-total : 26,98 $
-		TPS : 1,35 $
-		TVQ : 2,69 $
-		Total par semaine : 31,02 $
-		Sous-total par mois : 124,08 $
-		Sous-total annuel : 1 488,97 $
-		Rabais annuel (29 %) : 431,80 $
-		Frais annuels : 1 057,17 $*/
-		
-		/*Processeur : Intel Core i7
-		Taille du disque SSD : 768
-		Le portable est assurÈ rˇˇ˙9 +MotifDesktopIconUI$DesktopIconMouseListener   Åà IREM   \ijlø“ publishStatusPageˇˇ‚€ ORBSocketFactory   Ø≤≥¥%()ABMP3;<:∑ JMenu$1   1õ1ü growPriority   Üò applicationData   ÍÌˆ exp    Œ œ' -w-©-´DD AllPermissionsImplˇˇ∑ó EUROPEAN   ëí afis   
-
-! 
-RGBdefaultˇˇ‡ +DefaultMXBeanMappingFactory$IdentityMapping   05 isMultiPanelˇˇÃè 
-DirectClip   	t	} 1TubeAdapter   ≥¥ AlreadyBound   ”Ê|<_<h<i<j<k<l<~<<Ä QNAME_HANDLER_PARAM_NAMEˇˇ‰¡ axis   be∫¿ƒ0Á1)4N6ò6ô6õ nextNextˇˇËm nextCertˇˇÓõ GDIWindowSurfaceData   ?A∏A¬A√AƒA“BnB∑B∏BπB∫ "TransformC14NExclusiveWithComments   Éé m_Value   _` LongCounter   BÎBÏC&C-C4 ExternalMetadataReader    éèêëíìî CheckBoxMenuItemPainterˇˇ | bufferLimitˇˇ≥¯ epr   º AddressingTubeFactoryˇˇÂœ err   ” å ∂ ø‘‰Oﬂ§∏÷◊⁄Ú
-¬
- 
-“
-‘
-Ÿ
-›
-˜
-˙+foêì≈œ‘◊&)*45ç-.EWcef⁄‡„ÎPvwsxØø Cxâè∫23:@ëí√πøËÍÓDE_ ó€/2 u ™ Ω!!!≥!¸"")"4"ï##8#]#b%*B*C*J*N*R*]*j,v/◊/⁄0∑1 1o2Ü2µ2Ω2¬3$3È3Ï44ô5}6∫788Ü8¨999H9r9ö9©9æ:::S:í:î:õ:Á:˙>C>G>Y>f>l>n>Ç>™>÷>Ù?
-???J?É?ã@4@û@…APAmArAˇBRBSB¡BŒC◊D@DeDkDrEG¡G»G–GﬁGÍGÔGGÛGÙGıGˆG˜G˙G˝HHHÑHåHêIXIfIiIàI¿JOJVJàJ K"KãK¢K£LHLqLÔ ValueSetter$ReturnValue   •ß  SUPPLEMENTARY_PRIVATE_USE_AREA_Aˇˇﬁw fLoadersˇˇò FormatMismatch   2<¿<¡<¬ m_indentAmount     patternLengthˇˇ’ memberValuesˇˇ∏ç contentHandlerAdapterˇˇÍs 	sslSocketˇˇ˜+ JTree$DropLocation   224†4±6s8O SpinedBuffer   +ç+ñ+ü+•+˝+˛+ˇ,
-,,,,,,,,,,),/,0,>,J,K,L,O Sizeˇˇ»∞ JTable$DropLocation   1ˆ24p4t6b6x eos   ,^?. JTextComponent$DropLocation   4É4Ñ7	77! bufferPoolsˇˇΩ LineNumberReaderˇˇﬁŸ JList$DropLocation   11ò1ö3‡3Ê ExtSocketOption   ;; PrivilegedGetter   ÊÁÌÓ AF_PUTFIELDˇˇ›† Gradient   A™AØBIBN _aliasesˇˇÛ^ cleanIntervalˇˇ∑’ EnumMap$KeySet   '∏'ª LEAP_YEAR_DEFAULTˇˇŸ 	Ignorable   ;=BC MethodHandleEntry   ∆«Œ◊›ˇ baseUnit   &˜'' twoToTheDoubleScaleUpˇˇﬁ, entˇˇª¨ defaultUdpPrefLimitˇˇ∑  Iterable   f∫»‚È )*Psáº)ì„¯¸'8hikptyz|}ÄÇÜá“Ú/0>N_∑ƒZ≠∞±≤∂∑∏æ¿÷ÂÚÙ%,xVW^dmr}ù°£µ!œ"$z$}$ï$ù&)'f([,,,≥,ª-X-]2b2d8t8w8y8z8|8Å8í9˛FôFõFûJSJV est   $'h'“'‘'◊'€'Í'Ï'Ô'Ò((k(m(o(q(t({(|(~(ï(õ(û(®(™(º(¿(¬(ƒ(Ù) )!)1)4):)B)Ñ)à 
-originalEx   ≠‹<; fBuckets   òö evtˇˇﬂE ext   L´’LNOQTUVXYZ[df;=LMNTk{Ñê£wÇâè«˜˛ 	7<^ÚÛÙ #ÿ„ÌÒEHJMN´Ø≤∏mç8Ú9¥>&>'>(>)>*>+>,>- NON_ANONYMOUS   ƒ–“9¯ columnSelectionAdjustingˇˇÕ˛ TunnelState   E$ECEXEYEl initializationCount   Ã:B dstScanˇˇﬂ˝ NT_ANONYMOUS   ;HèHÆH… bufPos   ·L OMGSystemException$1   ¿¡ ORBUtilSystemException$1   ¬√ Order3   ?J?P cnonce_countˇˇ∫æ workers   öõ)∑ fRemoveChildˇˇÚS SAXDocumentParser   ÒÚÛÙÂ StAXDocumentParser   78˘˙ PlatformComponent[]ˇˇ›1 
-sampleTime   `abcdegh 
-DummyEvent 
