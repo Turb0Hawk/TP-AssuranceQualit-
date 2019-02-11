@@ -11,6 +11,9 @@ public class Cv {
 		System.out.println( "Bienvenue chez Barette!\n" );
 		Cv david = new Cv( "David", "Ringuet", "Technique Informatique de Gestion", 2, comps, "Un bon cours" );
 		david.affiche();
+		Cv jane = new Cv("Jane-Mary", "Menassa", "Technique Informatique de Gestion", 3, comps, "Développer de nouvelles connaissances");
+		jane.affiche();
+		
 	}
 	
 	public Cv( String nomIn, String prenomIn, String formationIn, int expIn, String[] compIn, String attentesIn ) {
