@@ -1,0 +1,1 @@
+Pour le formattage de code nous allons utiliser le style de formattage établit par sotira dans les cours de java de la dernière session. (Voir fichier CodeStyleMomorency.xml)
