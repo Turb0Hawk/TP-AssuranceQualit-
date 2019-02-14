@@ -1,11 +1,11 @@
-//----------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //Programmeur: David Ringuet
 //Date: 04-02-2019
 //Fichier Plats.java
 //
-//Description de la classe: [description de la classe
+//Description de la classe: Cette classe oermet de créer un plat qui pourras être utiliser plus tard
 //
-//----------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 public class Plats {
 	private String nom;
 	private double prix;
@@ -21,12 +21,12 @@ public class Plats {
 	public double getPrix() {
 		return this.prix;
 	}
-	
-	public void setNom(String nom) {
+
+	public void setNom( String nom ) {
 		this.nom = nom;
 	}
-	
-	public void setPrix(double prix) {
+
+	public void setPrix( double prix ) {
 		this.prix = prix;
 	}
 }

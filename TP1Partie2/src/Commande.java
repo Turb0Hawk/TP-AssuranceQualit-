@@ -1,13 +1,15 @@
-//----------------------------------------------------
+import java.util.ArrayList;
+
+//----------------------------------------------------------------------------------------------------------------------
 //Programmeur: David Ringuet
 //Date: 04-02-2019
 //Fichier Plats.java
 //
 //Description de la classe: 
 //Cette classe permet de crééer un objet qui représente un client et les plats qu'il commande. 
-//Cette classe assume que l'entrée est vérifié avant et ne contiend pas d'erreur.
+//Cette classe assume que l'entrée est vérifié avant et ne contiens pas d'erreur.
 //
-//----------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 public class Commande {
 	String nomClient;
 	int qte;
@@ -15,6 +17,18 @@ public class Commande {
 
 	public Commande( String nom ) {
 		setClient( nom );
+	}
+
+	public Commande( String nom, int qte, Plats plat ) {
+		setClient( nom );
+		setQte( qte );
+		setPlat( plat );
+	}
+
+	public Commande( String nom, int qte, String nomPlat, double prix ) {
+		setClient( nom );
+		setQte( qte );
+		setPlat( nomPlat, prix );
 	}
 
 	public void setClient( String nom ) {
@@ -32,10 +46,39 @@ public class Commande {
 	public void setPlat( Plats plat ) {
 		this.plat = plat;
 	}
-	
-	@
-	public String toString() {
-		return nomClient;
-		
+
+	/**
+	 * La methode printCommande() permet d'imprimer la commande courante dans un
+	 * format prédéterminé.
+	 * 
+	 * @return la commande formatté selon un format prédéterminé
+	 */
+
+	public String printCommande() {
+		return nomClient + " :  " + plat.getPrix() * qte + " $";
+		// PLEASE USE THIS
+	}
+
+	/**
+	 * La methode ajouterBonPlat() permet d'ajouter a la commande courrante le
+	 * bon plat qui lui est associe depuis une liste.
+	 * 
+	 * @param plats
+	 *            La liste des plats qui existe.
+	 * @param nomPlat
+	 *            le nom du plat a ajouter a la commande
+	 * 
+	 */
+
+	public static Plats trouverPlat( ArrayList<Plats> plats, String nomPlat ) {
+		// PLEASE USE THIS
+		Plats platTemp = null;
+		for ( Plats platCourrant : plats ) {
+			if ( platCourrant.getNom() == nomPlat ) {
+				platTemp=  platCourrant ;
+				break;
+			}
+		}
+		return platTemp;
 	}
 }
