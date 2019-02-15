@@ -1,8 +1,10 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,6 @@ public class Main {
 			String prix = string.substring( string.indexOf( " " ) );
 			listePlats.add( new Plats( nomDuPlat, Double.parseDouble( prix ) ) );
 		}
-		// TODO verif que la commande est pas fcked up
 		for ( String string : listeCommandes ) {
 			String nomLu = string.substring( 0, string.indexOf( " " ) );
 			String nomPlat = string.substring( string.indexOf( " " ) + 1, string.lastIndexOf( " " ) );
@@ -62,7 +63,6 @@ public class Main {
 			}
 		}
 
-
 		if ( fichierOk ) {
 			double[] totalParClient = new double[listeClients.size()];
 			for ( Commande commandeCourante : commandes ) {
@@ -75,6 +75,15 @@ public class Main {
 			}
 			System.out.println( allText );
 			// TODO Save le fichier
+
+			try {
+				BufferedWriter writer = Files.newBufferedWriter( new File( "Factures.txt" ).toPath() );
+				writer.write( allText );
+				writer.close();
+			} catch ( IOException e ) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
- 	}
+	}
 }
