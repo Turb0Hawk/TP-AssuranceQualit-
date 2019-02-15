@@ -11,7 +11,8 @@ public class Plats {
 	private double prix;
 
 	public Plats( String nom, double prix ) {
-
+		setNom( nom );
+		setPrix( prix );
 	}
 
 	public String getNom() {

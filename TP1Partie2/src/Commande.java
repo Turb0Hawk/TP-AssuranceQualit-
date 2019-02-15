@@ -74,7 +74,7 @@ public class Commande {
 		// PLEASE USE THIS
 		Plats platTemp = null;
 		for ( Plats platCourrant : plats ) {
-			if ( platCourrant.getNom() == nomPlat ) {
+			if ( platCourrant.getNom().equalsIgnoreCase( nomPlat )) {
 				platTemp=  platCourrant ;
 				break;
 			}

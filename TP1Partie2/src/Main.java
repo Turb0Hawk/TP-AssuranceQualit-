@@ -1,4 +1,10 @@
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 //----------------------------------------------------------------------------------------------------------------------
 //Programmeur: David Ringuet
@@ -14,36 +20,61 @@ public class Main {
 	public static void main( String[] args ) {
 		ArrayList<Commande> commandes = new ArrayList<Commande>();
 		ArrayList<Plats> listePlats = new ArrayList<Plats>();
+		String nomFichier = "fichierTest.txt";
+		boolean fichierOk = true;
 
-		// TODO ouvrir fichier à lire
+		// ouvrir fichier à lire
+		Path cheminFichier = new File( nomFichier ).toPath();
+		Charset charset = Charset.defaultCharset();
+		List<String> listeLignesFichier = null;
+		try {
+			listeLignesFichier = Files.readAllLines( cheminFichier, charset );
+		} catch ( IOException e ) {
+			System.out.println( "Le fichier ne respecte pas le format demandé ! " );
+			fichierOk = false;
+			e.printStackTrace();
+		}
+		List<String> listeClients = listeLignesFichier.subList( listeLignesFichier.indexOf( "Clients :" ) + 1,
+				listeLignesFichier.indexOf( "Plats :" ) );
+		List<String> listeNomPlats = listeLignesFichier.subList( listeLignesFichier.indexOf( "Plats :" ) + 1,
+				listeLignesFichier.indexOf( "Commandes :" ) );
+		List<String> listeCommandes = listeLignesFichier.subList( listeLignesFichier.indexOf( "Commandes :" ) + 1,
+				listeLignesFichier.indexOf( "Fin" ) );
 
-		// TODO lire les plats
-
-		String nomDuPlat = "";
-		String prix = "";
-		listePlats.add( new Plats( nomDuPlat, Double.parseDouble( prix ) ) );
-
-		// TODO lire les lignes des noms
-		{
-			String nomLu = "";
-			String nomPlat = "";
-			String qteLu = "";
-			if ( nomCorrect( nomLu ) ) {
-				commandes.add( new Commande( nomLu, Integer.parseInt( qteLu ),
-						Commande.trouverPlat( listePlats, nomPlat ) ) );
+		// lire les plats
+		for ( String string : listeNomPlats ) {
+			String nomDuPlat = string.substring( 0, string.indexOf( " " ) );
+			String prix = string.substring( string.indexOf( " " ) );
+			listePlats.add( new Plats( nomDuPlat, Double.parseDouble( prix ) ) );
+		}
+		// TODO verif que la commande est pas fcked up
+		for ( String string : listeCommandes ) {
+			String nomLu = string.substring( 0, string.indexOf( " " ) );
+			String nomPlat = string.substring( string.indexOf( " " ) + 1, string.lastIndexOf( " " ) );
+			String qteLu = string.substring( string.lastIndexOf( " " ) + 1 );
+			Plats plat = Commande.trouverPlat( listePlats, nomPlat );
+			if ( plat != null && listeClients.contains( nomLu ) ) {
+				commandes.add( new Commande( nomLu, Integer.parseInt( qteLu ), plat ) );
+			} else {
+				System.out.println( "Le fichier ne respecte pas le format demandé ! " );
+				fichierOk = false;
+				break;
 			}
 		}
 
-		// TODO into the file to save
-		for ( Commande commandeCourante : commandes ) {
-			/* the file += ( */commandeCourante.printCommande()/* + "\n") */;
-		}
 
-		// TODO Save le fichier
-	}
-	
-	public static boolean nomCorrect(String nomACheck) {
-		//TODO ajouter les règles pour la vérif des noms
-		return nomACheck.matches( "" )/*et autres r'egles*/;
-	}
+		if ( fichierOk ) {
+			double[] totalParClient = new double[listeClients.size()];
+			for ( Commande commandeCourante : commandes ) {
+				totalParClient[listeClients.indexOf( commandeCourante.nomClient )] += ( commandeCourante.plat.getPrix()
+						* commandeCourante.qte );
+			}
+			String allText = "Bienvenue chez Barette!\nFactures:\n";
+			for ( String client : listeClients ) {
+				allText += client + " :  " + totalParClient[listeClients.indexOf( client )] + " $\n";
+			}
+			System.out.println( allText );
+			// TODO Save le fichier
+		}
+ 	}
 }
