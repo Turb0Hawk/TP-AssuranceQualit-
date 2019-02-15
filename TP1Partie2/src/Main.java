@@ -1,6 +1,8 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,11 +24,22 @@ public class Main {
 	public static void main( String[] args ) {
 		ArrayList<Commande> commandes = new ArrayList<Commande>();
 		ArrayList<Plats> listePlats = new ArrayList<Plats>();
-		String nomFichier = "fichierTest.txt";
 		boolean fichierOk = true;
 
-		// ouvrir fichier à lire
+		BufferedReader fic = new BufferedReader( new InputStreamReader( System.in ) );
+		System.out.println( "Entrez le nom du fichier à lire: " );
+		
+		String nomFichier = "";
+		try {
+			nomFichier = fic.readLine();
+		} catch ( IOException errIO ) {
+			System.out.println( "\nUne erreur d'entrée-sortie" +
+					" est survenue." );
+			errIO.printStackTrace();
+		}
 		Path cheminFichier = new File( nomFichier ).toPath();
+		Files.exists( cheminFichier );
+
 		Charset charset = Charset.defaultCharset();
 		List<String> listeLignesFichier = null;
 		try {
@@ -74,14 +87,11 @@ public class Main {
 				allText += client + " :  " + totalParClient[listeClients.indexOf( client )] + " $\n";
 			}
 			System.out.println( allText );
-			// TODO Save le fichier
-
 			try {
 				BufferedWriter writer = Files.newBufferedWriter( new File( "Factures.txt" ).toPath() );
 				writer.write( allText );
 				writer.close();
 			} catch ( IOException e ) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
