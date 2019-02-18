@@ -37,6 +37,7 @@ public class Main {
 			errIO.printStackTrace();
 		}
 		Path cheminFichier = new File( nomFichier ).toPath();
+		System.out.println(cheminFichier);
 
 		if ( Files.exists( cheminFichier ) ) {
 			Charset charset = Charset.defaultCharset();
