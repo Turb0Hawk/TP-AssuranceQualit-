@@ -21,19 +21,25 @@ import java.util.List;
 //----------------------------------------------------------------------------------------------------------------------
 public class Main {
 
+	private final static String MESSAGE_ENTRER_NOM_FICHIER = "Entrez le nom du fichier à lire: ";
+	private final static String MESSAGE_ERREUR_NOM_FICHIER = "Erreur le fichier n'existe pas";
+	private final static String MESSAGE_ERREUR_ENTREE_SORTI = "\nUne erreur d'entrée-sortie" + " est survenue.";
+	private final static String MESSAGE_ERREUR_FORMAT_FICHIER = "Le fichier ne respecte pas le format demandé ! ";
+	private final static String MESSAGE_BIENVENUE = "Bienvenue chez Barette!\nFactures:\n";
+	
 	public static void main( String[] args ) {
 		ArrayList<Commande> commandes = new ArrayList<Commande>();
 		ArrayList<Plats> listePlats = new ArrayList<Plats>();
 		boolean fichierOk = true;
 
 		BufferedReader fic = new BufferedReader( new InputStreamReader( System.in ) );
-		System.out.println( "Entrez le nom du fichier à lire: " );
+		System.out.println( MESSAGE_ENTRER_NOM_FICHIER);
 
 		String nomFichier = "";
 		try {
 			nomFichier = fic.readLine();
 		} catch ( IOException errIO ) {
-			System.out.println( "\nUne erreur d'entrée-sortie" + " est survenue." );
+			System.out.println(MESSAGE_ERREUR_ENTREE_SORTI);
 			errIO.printStackTrace();
 		}
 		Path cheminFichier = new File( nomFichier ).toPath();
@@ -45,7 +51,7 @@ public class Main {
 			try {
 				listeLignesFichier = Files.readAllLines( cheminFichier, charset );
 			} catch ( IOException e ) {
-				System.out.println( "Le fichier ne respecte pas le format demandé ! " );
+				System.out.println(MESSAGE_ERREUR_FORMAT_FICHIER);
 				fichierOk = false;
 				e.printStackTrace();
 			}
@@ -69,7 +75,7 @@ public class Main {
 				if ( plat != null && listeClients.contains( nomLu ) ) {
 					commandes.add( new Commande( nomLu, Integer.parseInt( qteLu ), plat ) );
 				} else {
-					System.out.println( "Le fichier ne respecte pas le format demandé ! " );
+					System.out.println(MESSAGE_ERREUR_FORMAT_FICHIER);
 					fichierOk = false;
 					break;
 				}
@@ -81,7 +87,7 @@ public class Main {
 							.indexOf( commandeCourante.nomClient )] += ( commandeCourante.plat.getPrix()
 									* commandeCourante.qte );
 				}
-				String allText = "Bienvenue chez Barette!\nFactures:\n";
+				String allText = MESSAGE_BIENVENUE;
 				for ( String client : listeClients ) {
 					allText += client + " :  " + totalParClient[listeClients.indexOf( client )] + " $\n";
 				}
@@ -95,7 +101,7 @@ public class Main {
 				}
 			}
 		} else {
-			System.out.println( "Erreur le fichier n'existe pas" );
+			System.out.println( MESSAGE_ERREUR_NOM_FICHIER );
 		}
 	}
 }
